@@ -1,0 +1,37 @@
+prefix: '&6Job &4» &7'
+
+denyPerm: '&4You dont have permission for this.'
+jobIsNotExits: '&4This job is not exits.'
+wrongNumber: '&4Please use numbers greater than 0.'
+playerNotExits: '&4Player isnt exits'
+denyConsole: '&cYou cant use this action in console.'
+
+# admin create job messages
+createUsage: '&6/job admin create <name> <prefix> <suffix> <member-size> <playtime>
+  <max-warn>'
+jobIsExits: '&4This job is exits you can not create it again.'
+createSuccess: '&aJob creating successfully.'
+
+# admin delete job messages
+deleteUsage: '&6/job admin delete <name>'
+deleteSuccess: '&aJob deleting successfully.'
+
+# # admin edit job messages
+editUsage: '&6/job admin edit <name> <prefix> <suffix> <member-size> <playtime> <max-warn>'
+editSuccess: '&aJob editing successfully.'
+
+# admin setjob messages
+setJobUsage: '&6/job admin setjob <player> <name>'
+jobSetSuccess: '&aJob setting successfully.'
+
+
+emptyInvite: '&4You dont have any invite.'
+warnUsage: '&6/warn (add/take) (user)'
+warnAdded: '&aWarn added to this player.'
+maxWarnAndKick: '&cPlayer warn limit is filled and member is kicked.'
+SInviteSucc: '&aInvite is sended to player'
+RInviteSucc: '&aYou have a new job invite (/job <accept/deny>)'
+jobAccepted: '&aYou are accept a new job, your welcome'
+playerIsEmploy: '&cPlayer is empoyed,'
+inviteUsage: '&6/invite <user> <job>'
+cooldown: '&cYou are at cooldown.'
