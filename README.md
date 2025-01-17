@@ -12,49 +12,10 @@ Add Jar file to src folder and use this in pom.xml
 
 # SeasonJobs-Api
 
-Support SeasonJob Plugin After 2.0.0 Version!
+Support SeasonJob Plugin After 1.1.1 Version!
 
 
 load plugin with LoadJobApi live:
-
-
-Load this at first time
-
-**Kotlin**:
-```kt
-        val load = LoadJobAPI()
-        load.LoadJobAPI(dataFolder, this)
-```
-**Java**:
-```java
-        LoadJobAPI load = new LoadJobAPI();
-        load.LoadJobAPI(dataFolder, this);
-```
-
-**Full**:
-```kt
-package ir.parham.seasonJob
-
-import ir.parham.seasonJobsNew.LoadJobAPI
-import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.java.JavaPlugin
-
-class SeasonJob : JavaPlugin() {
-    companion object
-    {
-        var instance : Plugin? = null
-    }
-
-
-    override fun onEnable() {
-        // Plugin startup logic
-        instance = this
-
-        val load = LoadJobAPI()
-        load.LoadJobAPI(dataFolder, this)
-    }
-}
-```
 
 # Jobs Method:
 **Kotlin**:
@@ -144,7 +105,5 @@ class SeasonJob : JavaPlugin() {
         member.get(UUID).getJobName // member job
         member.get(UUID).getWarns // member warns
         member.get(UUID).getPlayTime // member playtime
+        member.get(UUID).addMinPlaytime // add 1min to player playtime
 ```
-
-
-2.0.0 Version Coming Soon, But You Can Create Your Job Plugin With This API
