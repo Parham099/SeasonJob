@@ -1,21 +1,21 @@
+# How Use PlaceHolders?
+Install placeholder api plugin and add seasonjobsExpansion to expansion folder
+
 # How Depend?
-Add Jar file to src folder and use this in pom.xml
+Add plugin jar file to src folder and use this in pom.xml
 ```xml
         <dependency>
             <groupId>ir.parham</groupId>
             <artifactId>seasonjob</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/SeasonJobs-New-1.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/SeasonJob-1.1.1.jar</systemPath>
         </dependency>
 ```
 
 # SeasonJobs-Api
 
 Support SeasonJob Plugin After 1.1.1 Version!
-
-
-load plugin with LoadJobApi live:
 
 # Jobs Method:
 **Kotlin**:
