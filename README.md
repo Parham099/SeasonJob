@@ -7,9 +7,9 @@ Add plugin jar file to src folder and use this in pom.xml
         <dependency>
             <groupId>ir.parham</groupId>
             <artifactId>seasonjob</artifactId>
-            <version>1.0</version>
+            <version>2.0.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/SeasonJob-1.1.1.jar</systemPath>
+            <systemPath>${project.basedir}/src/SeasonJob-2.0.0.jar</systemPath>
         </dependency>
 ```
 
@@ -113,3 +113,6 @@ Support SeasonJob Plugin After 1.1.1 Version!
         member.get(UUID).getPlayTime // member playtime
         member.get(UUID).addMinPlaytime // add 1min to player playtime
 ```
+
+
+You can create addons with api and upload in spigot :). for create the best roleplay job plugin! #first_rp_plugin 
