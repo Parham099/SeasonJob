@@ -33,6 +33,9 @@ Support SeasonJob Plugin After 1.1.1 Version!
         job.create("Job Name", members_size, need_playtime, "Job Prefix", "Job Suffix") // Create Job
         job.remove("Job Name") // Remove Job
         
+        job.getJobMembersSize("Job Name") // get a job members number
+        job.getJobMembers("Job Name") // get a job members
+
         job.get("Job Name")?.Name // Job Name
         job.get("Job Name")?.Prefix // Job Prefix
         job.get("Job Name")?.Suffix // Job Suffix
@@ -51,6 +54,9 @@ Support SeasonJob Plugin After 1.1.1 Version!
         job.contains("Job Name"); // Job Exits Check
         job.list(); // Get Jobs Name
         
+        job.getJobMembersSize("Job Name") // get a job members number
+        job.getJobMembers("Job Name") // get a job members
+
         job.create("Job Name", members_size, need_playtime, "Job Prefix", "Job Suffix"); // Create Job
         job.remove("Job Name"); // Remove Job
         
