@@ -25,8 +25,6 @@ class SeasonJob : JavaPlugin() {
 
         Bukkit.getPluginManager().registerEvents(ir.parham.seasonJob.Commands.Default.List(), this)
         Bukkit.getPluginCommand("seasonjob")?.setExecutor(MainCommands())
-
-        SeasonEventManager().addListener(listener())
     }
 
     override fun onDisable() {
