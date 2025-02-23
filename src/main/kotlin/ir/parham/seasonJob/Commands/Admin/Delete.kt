@@ -26,9 +26,10 @@ class Delete {
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "jobIsNotExits"))
             return false
         } else {
-            job.remove(args[2])
-            // send delete succeed
-            sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "deleteSuccess"))
+            if (job.remove(args[2])) {
+                // send delete succeed
+                sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "deleteSuccess"))
+            }
             return true
         }
     }

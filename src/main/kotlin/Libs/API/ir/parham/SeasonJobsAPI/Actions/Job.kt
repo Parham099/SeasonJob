@@ -2,18 +2,27 @@ package ir.parham.SeasonJobsAPI.Actions
 
 import Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.Luckperms
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobCreateEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobDeleteEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEditEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEventManager
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
 import java.util.UUID
 
-class Job {
+open class Job {
     class Jobs(val Name: String,val MaxWarn: Int, val MemberSize: Int, val PlayTime : Int, val Prefix : String, val Suffix : String)
     {
         init
         {
-            jobList.add(Name)
-            jobs.put(Name, this)
+            val jobEvent = JobEvent(this)
+            if (!jobEvent.isCancelled())
+            {
+                jobList.add(Name)
+                jobs.put(Name, this)
+            }
         }
     }
     companion object
@@ -35,18 +44,37 @@ class Job {
         if (!contains(name))
         {
             Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
-            Luckperms().createGroup(name)
+            val jobCreateEvent = JobCreateEvent(get(name)!!)
+            SeasonEventManager().fireEvent(jobCreateEvent)
+            if (!jobCreateEvent.isCancelled()) {
+                Luckperms().createGroup(name)
+                return true
+            }
 
-            return true
+            jobs.remove(name)
+            jobList.remove(name)
+            return false
         } else
         {
             return false
         }
     }
-    fun set(name : String, maxWarn: Int, memberSize : Int, playTime : Int, prefix : String, suffix : String)
+    fun set(name : String, maxWarn: Int, memberSize : Int, playTime : Int, prefix : String, suffix : String) : Boolean
     {
-        remove(name)
-        create(name, maxWarn, memberSize, playTime, prefix, suffix)
+        if (contains(name))
+        {
+            val jobSetEvent = JobEditEvent(get(name)!!)
+            SeasonEventManager().fireEvent(jobSetEvent)
+            if (!jobSetEvent.isCancelled())
+            {
+                jobs.remove(name)
+                jobList.remove(name)
+                Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
+                Luckperms().createGroup(name)
+                return true
+            }
+        }
+        return false
     }
     fun list() : List<String>
     {
@@ -74,13 +102,21 @@ class Job {
 
     fun remove(name: String) : Boolean
     {
-        if (jobs.containsKey(name) && jobList.contains(name))
+        if (contains(name))
         {
-            jobs.remove(name)
-            jobList.remove(name)
-            Luckperms().deleteGroup(name)
+            val jobDeleteEvent = JobDeleteEvent(get(name)!!)
+            val jobEvent = JobEvent(get(name)!!)
+            SeasonEventManager().fireEvent(jobEvent)
+            SeasonEventManager().fireEvent(jobDeleteEvent)
 
-            return true
+            if (!jobDeleteEvent.isCancelled() && !jobEvent.isCancelled())
+            {
+                jobs.remove(name)
+                jobList.remove(name)
+                Luckperms().deleteGroup(name)
+
+                return true
+            }
         }
         return false
     }

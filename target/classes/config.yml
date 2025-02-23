@@ -1,3 +1,0 @@
-luckperms-sync: false # create jobs luckperms rank
-invite-cooldown: true # enable and disable invite cooldown for 1min
-auto-save-data: true # auto save all player data in all 10min

@@ -34,9 +34,10 @@ class SetJob {
             {
                 val player : OfflinePlayer = Bukkit.getOfflinePlayer(args[2])
                 val members : Member.Members = member.get(player.uniqueId)!!
-                member.set(members.UUID, members.Warns, members.PlayTime, args[3])
-                // set succeed message
-                sender.sendMessage(message.get(player, "jobSetSuccess"))
+                if (member.set(members.UUID, members.Warns, members.PlayTime, args[3])) {
+                    // set succeed message
+                    sender.sendMessage(message.get(player, "jobSetSuccess"))
+                }
             }
             return true
         }

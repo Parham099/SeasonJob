@@ -30,9 +30,10 @@ class Edit {
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "wrongNumber"))
             return false
         } else {
-            job.set(args[2], args[7].toInt(), args[5].toInt(), args[6].toInt() , args[3], args[4])
-            // send create succeed
-            sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "editSuccess"))
+            if (job.set(args[2], args[7].toInt(), args[5].toInt(), args[6].toInt() , args[3], args[4])) {
+                // send create succeed
+                sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "editSuccess"))
+            }
             return true
         }
     }

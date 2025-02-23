@@ -1,5 +1,6 @@
 package ir.parham.seasonJob
 
+import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEventManager
 import ir.parham.SeasonJobsAPI.Actions.Job
 import ir.parham.SeasonJobsAPI.Actions.Member
 import ir.parham.SeasonJobsAPI.LoadJobAPI
@@ -24,6 +25,8 @@ class SeasonJob : JavaPlugin() {
 
         Bukkit.getPluginManager().registerEvents(ir.parham.seasonJob.Commands.Default.List(), this)
         Bukkit.getPluginCommand("seasonjob")?.setExecutor(MainCommands())
+
+        SeasonEventManager().addListener(listener())
     }
 
     override fun onDisable() {

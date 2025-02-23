@@ -94,13 +94,14 @@ class Member {
         return null
     }
 
-    fun set(uuid: UUID, warns: Int, playTime : Int, jobName : String)
+    fun set(uuid: UUID, warns: Int, playTime : Int, jobName : String) : Boolean
     {
         if (members.containsKey(uuid)) {
             remove(uuid)
         }
         Members(uuid, warns, playTime, jobName)
         Luckperms().addRank(uuid, jobName)
+        return true;
     }
 
     fun contains(uuid: UUID) : Boolean
