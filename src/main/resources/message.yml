@@ -48,3 +48,27 @@ info: "
 &6&lPlaytime: &e%seasonjobs_playtime_p_hours%\n
 &6&lWarn: &a%seasonjobs_warns%&8/&4%seasonjobs_warns_max%\n
 &e&l============= %player_name%&e&l =============\n"
+
+
+help: "
+&2&l-> &a&lHelp &2&l<-\n
+\n
+&aAdmin Commands:\n
+&3- /job admin create\n
+&3- /job admin delete\n
+&3- /job admin edit\n
+&3- /job admin setjob\n
+
+&aCommands:\n
+&3- /job invite\n
+&3- /job accept\n
+&3- /job deny\n
+&3- /job info\n
+&3- /job kick\n
+&3- /job leave\n
+&3- /job leave\n
+&3- /job list\n
+&3- /job warn\n
+
+&2----------------------------------
+"

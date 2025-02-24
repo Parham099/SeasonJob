@@ -41,38 +41,46 @@ open class Job {
     }
     fun create(name: String, maxWarn: Int, memberSize: Int, playTime: Int, prefix : String, suffix : String) : Boolean
     {
-        if (!contains(name))
-        {
-            Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
-            val jobCreateEvent = JobCreateEvent(get(name)!!)
-            SeasonEventManager().fireEvent(jobCreateEvent)
-            if (!jobCreateEvent.isCancelled()) {
-                Luckperms().createGroup(name)
-                return true
-            }
+        try {
+            if (!contains(name))
+            {
+                Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
+                val jobCreateEvent = JobCreateEvent(get(name)!!)
+                SeasonEventManager().fireEvent(jobCreateEvent)
+                if (!jobCreateEvent.isCancelled()) {
+                    Luckperms().createGroup(name)
+                    return true
+                }
 
-            jobs.remove(name)
-            jobList.remove(name)
-            return false
-        } else
-        {
+                jobs.remove(name)
+                jobList.remove(name)
+                return false
+            } else
+            {
+                return false
+            }
+        } catch (e : Exception) {
             return false
         }
     }
     fun set(name : String, maxWarn: Int, memberSize : Int, playTime : Int, prefix : String, suffix : String) : Boolean
     {
-        if (contains(name))
-        {
-            val jobSetEvent = JobEditEvent(get(name)!!)
-            SeasonEventManager().fireEvent(jobSetEvent)
-            if (!jobSetEvent.isCancelled())
+        try {
+            if (contains(name))
             {
-                jobs.remove(name)
-                jobList.remove(name)
-                Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
-                Luckperms().createGroup(name)
-                return true
+                val jobSetEvent = JobEditEvent(get(name)!!)
+                SeasonEventManager().fireEvent(jobSetEvent)
+                if (!jobSetEvent.isCancelled())
+                {
+                    jobs.remove(name)
+                    jobList.remove(name)
+                    Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
+                    Luckperms().createGroup(name)
+                    return true
+                }
             }
+        } catch (e: Exception) {
+            return false
         }
         return false
     }
@@ -102,21 +110,25 @@ open class Job {
 
     fun remove(name: String) : Boolean
     {
-        if (contains(name))
-        {
-            val jobDeleteEvent = JobDeleteEvent(get(name)!!)
-            val jobEvent = JobEvent(get(name)!!)
-            SeasonEventManager().fireEvent(jobEvent)
-            SeasonEventManager().fireEvent(jobDeleteEvent)
-
-            if (!jobDeleteEvent.isCancelled() && !jobEvent.isCancelled())
+        try {
+            if (contains(name))
             {
-                jobs.remove(name)
-                jobList.remove(name)
-                Luckperms().deleteGroup(name)
+                val jobDeleteEvent = JobDeleteEvent(get(name)!!)
+                val jobEvent = JobEvent(get(name)!!)
+                SeasonEventManager().fireEvent(jobEvent)
+                SeasonEventManager().fireEvent(jobDeleteEvent)
 
-                return true
+                if (!jobDeleteEvent.isCancelled() && !jobEvent.isCancelled())
+                {
+                    jobs.remove(name)
+                    jobList.remove(name)
+                    Luckperms().deleteGroup(name)
+
+                    return true
+                }
             }
+        } catch (e: Exception) {
+            return false
         }
         return false
     }

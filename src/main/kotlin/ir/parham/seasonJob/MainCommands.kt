@@ -1,15 +1,18 @@
 package ir.parham.seasonJob
 
+import Libs.API.ir.parham.SeasonJobsAPI.Senders.Message
 import ir.parham.seasonJob.Commands.Admin.Create
 import ir.parham.seasonJob.Commands.Admin.Delete
 import ir.parham.seasonJob.Commands.Admin.Edit
 import ir.parham.seasonJob.Commands.Admin.SetJob
 import ir.parham.seasonJob.Commands.Default.*
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import java.util.UUID
 
 class MainCommands : CommandExecutor, TabCompleter
 {
@@ -41,13 +44,16 @@ class MainCommands : CommandExecutor, TabCompleter
                     SetJob().setJob(sender, args)}
                 "edit" -> {
                     Edit().edit(sender, args)}
+                else -> {
+                    val mess = Message()
+                    sender.sendMessage(mess.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "help"))
+                }
             }
             return true
         }
 
         when (args[0].lowercase())
         {
-            "listmember" -> {sender.sendMessage("Coming soon!")}
             "list" -> {List().runner(sender, args)}
             "warn" -> {Warn().runner(sender, args)}
             "invite" -> {Invite().runner(sender, args)}
@@ -56,6 +62,10 @@ class MainCommands : CommandExecutor, TabCompleter
             "info" -> {Info().runner(sender, args)}
             "deny" -> {Deny().runner(sender, args)}
             "accept" -> {Accept().runner(sender, args)}
+            else -> {
+                val mess = Message()
+                sender.sendMessage(mess.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "help"))
+            }
         }
         return false
     }
@@ -69,7 +79,6 @@ class MainCommands : CommandExecutor, TabCompleter
                 return listOf("create", "delete", "setjob", "edit")
             } else {
                 when (args[0].lowercase()) {
-                    "listmember" -> {}
                     "list" -> {}
                     "warn" -> {return Warn().completer(p0, args)}
                     "invite" -> {return Invite().completer(p0, args)}

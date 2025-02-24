@@ -37,6 +37,8 @@ class SetJob {
                 if (member.set(members.UUID, members.Warns, members.PlayTime, args[3])) {
                     // set succeed message
                     sender.sendMessage(message.get(player, "jobSetSuccess"))
+                }  else {
+                    sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "jobIsNotExits"))
                 }
             }
             return true
