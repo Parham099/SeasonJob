@@ -1,12 +1,12 @@
 package Libs.API.ir.parham.SeasonJobsAPI.Senders
 
-import Config
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.PlaceholderAPI
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import org.bukkit.ChatColor
 import org.bukkit.OfflinePlayer
 
-class Message() {
+class Message {
     companion object
     {
         val messages : HashMap<String, String> = HashMap<String, String>()
@@ -20,6 +20,7 @@ class Message() {
             messages.put(message, messageConfig.getString(message).toString())
         }
     }
+
     fun get(player: OfflinePlayer, name : String) : String
     {
         if (messages.containsKey(name))
@@ -37,7 +38,8 @@ class Message() {
         return ""
     }
 
-    fun colorize(arg: String): String {
+    fun colorize(arg: String): String
+    {
         return ChatColor.translateAlternateColorCodes('&', arg)
     }
 }

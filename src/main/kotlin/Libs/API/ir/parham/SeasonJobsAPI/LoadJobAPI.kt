@@ -1,6 +1,6 @@
 package ir.parham.SeasonJobsAPI
 
-import Config
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.Depends
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Message
@@ -48,6 +48,10 @@ class LoadJobAPI {
             logger.log("&2Users &aAre Loading &7...")
             Member().loadAll()
             logger.log("&2Users &aAre Loaded.")
+
+//            logger.log("&2Editor GUI &aStyle Are Loading &7...")
+//            Instance!!.saveResource("Admin.fxml", false)
+//            logger.log("&2Editor Style &aAre Loaded.")
 
             Updater.start()
             logger.log(" ")

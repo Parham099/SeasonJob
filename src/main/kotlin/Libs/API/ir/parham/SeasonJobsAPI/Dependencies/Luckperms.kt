@@ -1,7 +1,6 @@
 package Libs.API.ir.parham.SeasonJobsAPI.Dependencies
 
-import Config
-import ir.parham.SeasonJobsAPI.Actions.Job
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import net.luckperms.api.LuckPermsProvider
 import net.luckperms.api.model.group.Group

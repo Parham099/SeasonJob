@@ -1,7 +1,8 @@
 package ir.parham.SeasonJobsAPI.Actions
 
-import Config
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.Luckperms
+import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
 import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.members
 import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.membersByJob
 
@@ -80,6 +81,7 @@ class Member {
             }
             members.remove(uuid)
             Luckperms().removeRank(uuid, playerJob)
+            Luckperms().addRank(uuid, "default")
             return true;
         }
         return false;
@@ -109,40 +111,41 @@ class Member {
         return list().contains(uuid)
     }
 
+    @Synchronized
     fun loadAll()
     {
         val dataConfig : FileConfiguration = Config().get(Configs.DATA)!!
 
-        var a : Int = 0
-        for (key in dataConfig.getKeys(true))
+        for (key in dataConfig.getKeys(false))
         {
-            if (a == 0)
+            load(UUID.fromString(key))
+        }
+    }
+    fun load(uuid: UUID)
+    {
+        try
+        {
+            val dataConfig: FileConfiguration = Config().get(Configs.DATA)!!
+            val dataSection: ConfigurationSection = dataConfig.getConfigurationSection(uuid.toString())!!
+
+
+            if (dataSection.contains("warn") && dataSection.contains("playtime"))
             {
-                val dataSection: ConfigurationSection = dataConfig.getConfigurationSection(key)!!
-                if (dataSection != null) {
-                    if (dataSection.contains("warn") && dataSection.contains("playtime")) {
-                        if (Luckperms().isEnable())
-                        {
-                            LuckPermsProvider.get().userManager.loadUser(UUID.fromString(key))
-                        }
-                        Members(
-                            UUID.fromString(key),
-                            dataSection.getInt("warn"),
-                            dataSection.getInt("playtime"),
-                            dataSection.getString("job").toString()
-                        )
-                        a++
-                    }
+                if (Luckperms().isEnable())
+                {
+                    LuckPermsProvider.get().userManager.loadUser(uuid)
                 }
+                Members(
+                    uuid,
+                    dataSection.getInt("warn"),
+                    dataSection.getInt("playtime"),
+                    dataSection.getString("job").toString()
+                )
             }
-            else if (a == 3)
-            {
-                a = 0
-            }
-            else
-            {
-                a++
-            }
+        }
+        catch (e : Exception)
+        {
+            Logger().log("Exception loading members ($uuid)")
         }
     }
 
@@ -150,32 +153,41 @@ class Member {
     {
         if (members.keys.contains(uuid))
         {
-            Config().recreate(Configs.DATA)
-            var dataConfig : FileConfiguration = Config().get(Configs.DATA)!!
-
-            for (key in members.keys)
+            try
             {
-                dataConfig.createSection(key.toString())
+                Config().recreate(Configs.DATA)
+                var dataConfig: FileConfiguration = Config().get(Configs.DATA)!!
 
-                var section : ConfigurationSection = dataConfig.getConfigurationSection(key.toString())!!
+                for (key in members.keys)
+                {
+                    dataConfig.createSection(key.toString())
 
-                section.createSection("playtime")
-                section.createSection("warn")
-                section.createSection("job")
-                section.set("playtime", get(key)?.PlayTime)
-                section.set("warn", get(key)?.Warns)
-                section.set("job", get(key)?.JobName)
+                    var section: ConfigurationSection = dataConfig.getConfigurationSection(key.toString())!!
+
+                    section.createSection("playtime")
+                    section.createSection("warn")
+                    section.createSection("job")
+                    section.set("playtime", get(key)?.PlayTime)
+                    section.set("warn", get(key)?.Warns)
+                    section.set("job", get(key)?.JobName)
+                }
+
+                Config().save(Configs.DATA, dataConfig)
+                return true
             }
-
-            Config().save(Configs.DATA, dataConfig)
-            return true
+            catch (e : Exception)
+            {
+                Logger().log("Exception while loading player ($uuid)")
+            }
         }
         return false
     }
 
+    @Synchronized
     fun saveAll()
     {
-        for (key in members.keys) {
+        for (key in members.keys)
+        {
             save(key)
         }
     }

@@ -39,6 +39,7 @@ kickUsage: '&6/kick <username>'
 kickSuccess: '&aPlayer Kicked successfully'
 leaveSuccess: '&aYou are leave from your job.'
 infoUsage: '&e/job info <user>'
+list-members-usage: '&e/job listmembers <jobname>'
 
 
 # place a \n for get next line

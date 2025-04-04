@@ -1,12 +1,13 @@
 package ir.parham.SeasonJobsAPI.Actions
 
-import Config
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.Luckperms
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobCreateEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobDeleteEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEditEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEventManager
+import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
@@ -137,63 +138,78 @@ open class Job {
     {
         if (jobs.containsKey(name))
         {
-            Config().recreate(Configs.JOBS)
-            var jobsConfig : FileConfiguration = Config().get(Configs.JOBS)!!
-
-            for (key in jobList)
+            try
             {
-                jobsConfig.createSection(key)
+                Config().recreate(Configs.JOBS)
+                var jobsConfig: FileConfiguration = Config().get(Configs.JOBS)!!
 
-                val section : ConfigurationSection = jobsConfig.getConfigurationSection(key)!!
+                for (key in jobList)
+                {
+                    jobsConfig.createSection(key)
 
-                section.createSection("prefix")
-                section.createSection("suffix")
-                section.createSection("members")
-                section.createSection("playtime")
-                section.set("prefix", get(key)?.Prefix)
-                section.set("suffix", get(key)?.Suffix)
-                section.set("members", get(key)?.MemberSize)
-                section.set("playtime", get(key)?.PlayTime)
+                    val section: ConfigurationSection = jobsConfig.getConfigurationSection(key)!!
+
+                    section.createSection("prefix")
+                    section.createSection("suffix")
+                    section.createSection("members")
+                    section.createSection("playtime")
+                    section.set("prefix", get(key)?.Prefix)
+                    section.set("suffix", get(key)?.Suffix)
+                    section.set("members", get(key)?.MemberSize)
+                    section.set("playtime", get(key)?.PlayTime)
+                }
+
+                Config().save(Configs.JOBS, jobsConfig)
+                return true
+            } catch (e : Exception)
+            {
+                Logger().log("Exception while saving job ($name)")
+                return false
             }
-
-            Config().save(Configs.JOBS, jobsConfig)
-            return true
         }
         return false
     }
 
+    @Synchronized
     fun loadAll()
     {
         val jobsConfig : FileConfiguration = Config().get(Configs.JOBS)!!
 
-        var a : Int = 0
-        for (key in jobsConfig.getKeys(true))
+        for (key in jobsConfig.getKeys(false))
         {
-            if (a == 0) {
-                val jobSection : ConfigurationSection? = jobsConfig.getConfigurationSection(key)
-
-                if (jobSection != null) {
-                    create(
-                        jobSection.name,
-                        jobSection.getInt("maxWarn"),
-                        jobSection.getInt("members"),
-                        jobSection.getInt("playtime"),
-                        jobSection.getString("prefix").toString(),
-                        jobSection.getString("suffix").toString()
-                    )
-                }
-                a++
-            } else {
-                if (a == 4) {
-                    a = 0
-                    continue
-                }
-                a++
-                continue
-            }
+            load(key)
         }
     }
 
+    fun load(name: String) : Boolean
+    {
+        try
+        {
+            val jobsConfig: FileConfiguration = Config().get(Configs.JOBS)!!
+
+            val jobSection: ConfigurationSection? = jobsConfig.getConfigurationSection(name)
+
+            if (jobSection != null)
+            {
+                create(
+                    jobSection.name,
+                    jobSection.getInt("maxWarn"),
+                    jobSection.getInt("members"),
+                    jobSection.getInt("playtime"),
+                    jobSection.getString("prefix").toString(),
+                    jobSection.getString("suffix").toString()
+                )
+            }
+            return true
+        }
+        catch (e : Exception)
+        {
+            Logger().log("Exception while loading job ($name)")
+            return false
+        }
+    }
+
+    @Synchronized
     fun saveAll()
     {
         for (key in jobList)

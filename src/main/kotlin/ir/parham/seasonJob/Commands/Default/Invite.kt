@@ -1,6 +1,6 @@
 package ir.parham.seasonJob.Commands.Default
 
-import Config
+import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Commands
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Message
 import ir.parham.SeasonJobsAPI.Actions.Job

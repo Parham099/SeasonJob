@@ -1,5 +1,5 @@
 name: SeasonJob
-version: '2.0.5'
+version: '2.0.7'
 main: ir.parham.seasonJob.SeasonJob
 api-version: '1.18'
 

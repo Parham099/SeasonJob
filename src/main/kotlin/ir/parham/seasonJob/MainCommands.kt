@@ -54,6 +54,7 @@ class MainCommands : CommandExecutor, TabCompleter
 
         when (args[0].lowercase())
         {
+            "listmembers" -> {ListMember().runner(sender, args)}
             "list" -> {List().runner(sender, args)}
             "warn" -> {Warn().runner(sender, args)}
             "invite" -> {Invite().runner(sender, args)}
@@ -72,13 +73,14 @@ class MainCommands : CommandExecutor, TabCompleter
 
     override fun onTabComplete(p0: CommandSender,p1: Command, p2: String, args: Array<out String>?): List<String> {
         if (args!!.size == 1) {
-            return listOf("admin", "listmember", "list", "warn", "invite", "leave", "kick", "deny", "accept", "info")
+            return listOf("admin", "list", "warn", "invite", "leave", "kick", "deny", "accept", "info", "listmembers")
         }
         if (!args.isEmpty()) {
             if (args[0].equals("admin", true) && args.size == 2) {
                 return listOf("create", "delete", "setjob", "edit")
             } else {
                 when (args[0].lowercase()) {
+                    "listmembers" -> {return ListMember().completer(p0, args)}
                     "list" -> {}
                     "warn" -> {return Warn().completer(p0, args)}
                     "invite" -> {return Invite().completer(p0, args)}
