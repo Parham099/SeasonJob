@@ -2,6 +2,9 @@ package ir.parham.SeasonJobsAPI.Actions
 
 import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Dependencies.Luckperms
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Member.MemberEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Member.MemberEventType
+import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEventManager
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
 import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.members
 import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.membersByJob
@@ -14,7 +17,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class Member {
+class Member(val admin: String = "No Information") {
     class Members(val UUID : UUID, val Warns : Int, val PlayTime : Int, val JobName : String)
     {
         companion object
@@ -48,41 +51,68 @@ class Member {
 
     fun add(uuid: UUID, jobName : String) : Boolean
     {
-        if (!members.containsKey(uuid))
-        {
-            Members(uuid, 0, 0, jobName)
-            Luckperms().addRank(uuid, jobName)
+        if (!members.containsKey(uuid)) {
+            val mem = Members(uuid, 0, 0, jobName)
+
+            val memberEvent = MemberEvent(jobName, 0, 0, mem, admin, MemberEventType.ADD)
+            SeasonEventManager().fireEvent(memberEvent)
+
+            if (!memberEvent.isCancelled())
+            {
+                Luckperms().addRank(uuid, jobName)
+            }
+            else
+            {
+                remove(uuid, false)
+            }
             return true;
         }
         return false;
     }
 
-    fun remove(uuid: UUID) : Boolean
+    fun remove(uuid: UUID, sendEvent: Boolean = true) : Boolean
     {
         if (members.containsKey(uuid))
         {
-            val playerJob : String = members.get(uuid)!!.JobName
+            val playerJob : Members = members.get(uuid)!!
 
             val listMembs = ArrayList<UUID>()
-            for (member in membersByJob.get(playerJob)!!)
+
+            val memberEvent = MemberEvent(
+                playerJob.JobName,
+                playerJob.Warns,
+                playerJob.PlayTime,
+                playerJob,
+                admin,
+                MemberEventType.REMOVE
+            )
+            if (sendEvent)
             {
-                if (!member.equals(uuid))
-                {
-                    listMembs.add(member)
-                }
+                SeasonEventManager().fireEvent(memberEvent)
             }
 
-            if (listMembs.isEmpty()) {
-                membersByJob.remove(playerJob)
-            }
-            else
+            if (!sendEvent || !memberEvent.isCancelled())
             {
-                membersByJob.put(playerJob, listMembs)
+                for (member in membersByJob.get(playerJob.JobName)!!)
+                {
+                    if (!member.equals(uuid))
+                    {
+                        listMembs.add(member)
+                    }
+                }
+
+                if (listMembs.isEmpty()) {
+                    membersByJob.remove(playerJob.JobName)
+                }
+                else
+                {
+                    membersByJob.put(playerJob.JobName, listMembs)
+                }
+                members.remove(uuid)
+                Luckperms().removeRank(uuid, playerJob.JobName)
+                Luckperms().addRank(uuid, "default")
+                return true;
             }
-            members.remove(uuid)
-            Luckperms().removeRank(uuid, playerJob)
-            Luckperms().addRank(uuid, "default")
-            return true;
         }
         return false;
     }
@@ -98,12 +128,28 @@ class Member {
 
     fun set(uuid: UUID, warns: Int, playTime : Int, jobName : String) : Boolean
     {
-        if (members.containsKey(uuid)) {
-            remove(uuid)
+        if (members.containsKey(uuid))
+        {
+            val memberEvent = MemberEvent(
+                jobName,
+                warns,
+                playTime,
+                members.get(uuid)!!,
+                admin,
+                MemberEventType.SET
+            )
+            SeasonEventManager().fireEvent(memberEvent)
+
+            if (!memberEvent.isCancelled())
+            {
+                remove(uuid, false)
+
+                Members(uuid, warns, playTime, jobName)
+                Luckperms().addRank(uuid, jobName)
+            }
+            return true;
         }
-        Members(uuid, warns, playTime, jobName)
-        Luckperms().addRank(uuid, jobName)
-        return true;
+        return false
     }
 
     fun contains(uuid: UUID) : Boolean

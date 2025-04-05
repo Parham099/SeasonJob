@@ -17,6 +17,7 @@ class Invite : Commands {
     companion object {
         val data: HashMap<UUID, Int> = HashMap()
         val invite: HashMap<UUID, String> = HashMap()
+        val inviters: HashMap<UUID, String> = HashMap()
     }
     override fun runner(sender: CommandSender, args: Array<out String>) {
         val message = Message()
@@ -40,7 +41,9 @@ class Invite : Commands {
             // cooldown
         } else {
             invite.put(Bukkit.getPlayer(args[1])!!.uniqueId, args[2])
-            if (sender is Player) {
+            inviters.put(Bukkit.getPlayer(args[1])!!.uniqueId, sender.name)
+            if (sender is Player)
+            {
                 data.put(sender.uniqueId, 60)
             }
             sender.sendMessage(message.get(sender, "SInviteSucc"))

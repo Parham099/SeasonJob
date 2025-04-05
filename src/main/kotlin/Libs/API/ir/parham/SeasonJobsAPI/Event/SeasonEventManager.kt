@@ -15,6 +15,7 @@ class SeasonEventManager
         listeners.add(event)
     }
 
+    @Synchronized
     fun fireEvent(event: Any)
     {
         for (listener in listeners)

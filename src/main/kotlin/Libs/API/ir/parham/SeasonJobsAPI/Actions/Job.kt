@@ -48,8 +48,21 @@ open class Job {
                 Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
                 val jobCreateEvent = JobCreateEvent(get(name)!!)
                 SeasonEventManager().fireEvent(jobCreateEvent)
-                if (!jobCreateEvent.isCancelled()) {
-                    Luckperms().createGroup(name)
+
+                if (!jobCreateEvent.isCancelled())
+                {
+                    jobs.remove(name)
+                    jobList.remove(name)
+
+                    Jobs(
+                        jobCreateEvent.getName(),
+                        jobCreateEvent.getMaxWarn(),
+                        jobCreateEvent.getMemberSize(),
+                        jobCreateEvent.getPlayTime(),
+                        jobCreateEvent.getPrefix(),
+                        jobCreateEvent.getSuffix()
+                    )
+                    Luckperms().createGroup(jobCreateEvent.getName())
                     return true
                 }
 
@@ -75,7 +88,14 @@ open class Job {
                 {
                     jobs.remove(name)
                     jobList.remove(name)
-                    Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
+                    Jobs(
+                        jobSetEvent.getName(),
+                        jobSetEvent.getMaxWarn(),
+                        jobSetEvent.getMemberSize(),
+                        jobSetEvent.getPlayTime(),
+                        jobSetEvent.getPrefix(),
+                        jobSetEvent.getSuffix()
+                    )
                     Luckperms().createGroup(name)
                     return true
                 }
@@ -115,11 +135,9 @@ open class Job {
             if (contains(name))
             {
                 val jobDeleteEvent = JobDeleteEvent(get(name)!!)
-                val jobEvent = JobEvent(get(name)!!)
-                SeasonEventManager().fireEvent(jobEvent)
                 SeasonEventManager().fireEvent(jobDeleteEvent)
 
-                if (!jobDeleteEvent.isCancelled() && !jobEvent.isCancelled())
+                if (!jobDeleteEvent.isCancelled())
                 {
                     jobs.remove(name)
                     jobList.remove(name)

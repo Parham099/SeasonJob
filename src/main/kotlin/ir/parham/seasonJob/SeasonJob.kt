@@ -28,12 +28,6 @@ class SeasonJob : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(List(), this)
         Bukkit.getPluginManager().registerEvents(ListMember(), this)
         Bukkit.getPluginCommand("seasonjob")?.setExecutor(MainCommands())
-
-//        if (Config().get(Configs.CONFIG)?.getBoolean("editor-gui") == true)
-//        {
-//            // load editor gui if exist
-//            GUI()
-//        }
     }
 
     override fun onDisable() {

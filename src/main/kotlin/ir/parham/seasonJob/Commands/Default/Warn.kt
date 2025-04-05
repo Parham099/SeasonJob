@@ -7,10 +7,13 @@ import ir.parham.SeasonJobsAPI.Actions.Member
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import java.util.*
 import kotlin.collections.List
 
 class Warn: Commands {
+    var admin: String = "Console"
+
     override fun runner(sender: CommandSender, args: Array<out String>) {
         val message = Message()
         if (args.size < 3) {
@@ -36,7 +39,11 @@ class Warn: Commands {
                         sender.sendMessage(message.get(p, "maxWarnAndKick"))
                         // max warn and kick
                     } else {
-                        Member().set(member.UUID, newWarn, member.PlayTime, member.JobName)
+                        if (sender is Player)
+                        {
+                            admin = sender.name
+                        }
+                        Member(admin).set(member.UUID, newWarn, member.PlayTime, member.JobName)
                         sender.sendMessage(message.get(p, "warnAdded"))
                         // add warn
                     }
@@ -51,7 +58,11 @@ class Warn: Commands {
                         // player warn is 0
                         sender.sendMessage(message.get(p, "warnIsLowest"))
                     } else {
-                        Member().set(member.UUID, newWarn, member.PlayTime, member.JobName)
+                        if (sender is Player)
+                        {
+                            admin = sender.name
+                        }
+                        Member(admin).set(member.UUID, newWarn, member.PlayTime, member.JobName)
                         sender.sendMessage(message.get(p, "warnTaked"))
                         // take warn
                     }

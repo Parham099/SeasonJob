@@ -11,6 +11,8 @@ import java.util.UUID
 import kotlin.collections.List
 
 class Leave : Commands {
+    var admin: String = "Console"
+
     override fun runner(sender: CommandSender, args: Array<out String>) {
         val message = Message()
         if (sender !is Player) {
@@ -23,6 +25,8 @@ class Leave : Commands {
             // player is employed
             sender.sendMessage(message.get(sender, "playerIsEmploy"))
         } else {
+            admin = sender.uniqueId.toString()
+
             remover(sender)
             sender.sendMessage(message.get(sender, "leaveSuccess"))
             // leaved
@@ -34,7 +38,7 @@ class Leave : Commands {
     }
 
     override fun remover(target: OfflinePlayer) {
-        Member().remove(target.uniqueId)
+        Member(admin).remove(target.uniqueId)
     }
 
     override fun adder(target: OfflinePlayer) {

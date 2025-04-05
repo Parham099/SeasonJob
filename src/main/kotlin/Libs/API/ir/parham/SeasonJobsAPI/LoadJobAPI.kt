@@ -50,7 +50,11 @@ class LoadJobAPI {
             logger.log("&2Users &aAre Loaded.")
 
 //            logger.log("&2Editor GUI &aStyle Are Loading &7...")
-//            Instance!!.saveResource("Admin.fxml", false)
+//            if (Config().get(Configs.CONFIG)?.getBoolean("editor-gui") == true)
+//            {
+//                // load editor gui if exist
+//                GUI().start()
+//            }
 //            logger.log("&2Editor Style &aAre Loaded.")
 
             Updater.start()
