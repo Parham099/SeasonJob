@@ -33,19 +33,7 @@ class SeasonEventManager
                     {
                         return
                     }
-                    else if (event is JobCreateEvent && function.parameters[0].type == JobCreateEvent::class.java)
-                    {
-                        function.invoke(listener, event)
-                    }
-                    else if (event is JobDeleteEvent && function.parameters[0].type == JobDeleteEvent::class.java)
-                    {
-                        function.invoke(listener, event)
-                    }
-                    else if (event is JobEvent && function.parameters[0].type == JobEvent::class.java)
-                    {
-                        function.invoke(listener, event)
-                    }
-                    else if (event is JobCreateEvent && function.parameters[0].type == JobCreateEvent::class.java)
+                    else
                     {
                         function.invoke(listener, event)
                     }
