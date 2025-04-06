@@ -4,12 +4,12 @@ import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEvent
 import ir.parham.SeasonJobsAPI.Actions.Member
 import org.bukkit.OfflinePlayer
 
-class MemberEvent(private val newJobName: String,
-                  private val newWarn: Int,
-                  private val newPlaytime: Int,
-                  private val member: Member.Members,
-                  private val admin: String,
-                  private val eventType: MemberEventType) : SeasonEvent()
+class MemberEvent(private var newJobName: String,
+                  private var newWarn: Int,
+                  private var newPlaytime: Int,
+                  private var member: Member.Members,
+                  private var admin: String,
+                  private var eventType: MemberEventType) : SeasonEvent()
 {
 
     fun getMember() : Member.Members
@@ -28,6 +28,10 @@ class MemberEvent(private val newJobName: String,
     {
         return newJobName
     }
+    fun getNewJob(newJob: String)
+    {
+        newJobName = newJob
+    }
     fun getOldJob() : String
     {
         return member.JobName
@@ -36,6 +40,10 @@ class MemberEvent(private val newJobName: String,
     {
         return newWarn
     }
+    fun setNewWarn(newWarnNum: Int)
+    {
+        newWarn = newWarnNum
+    }
     fun getOldWarn() : Int
     {
         return member.Warns
@@ -43,6 +51,10 @@ class MemberEvent(private val newJobName: String,
     fun getNewPlaytime() : Int
     {
         return newPlaytime
+    }
+    fun setNewPlaytime(newPlaytimeNum: Int)
+    {
+        newPlaytime = newPlaytimeNum
     }
     fun getOldPlaytime() : Int
     {

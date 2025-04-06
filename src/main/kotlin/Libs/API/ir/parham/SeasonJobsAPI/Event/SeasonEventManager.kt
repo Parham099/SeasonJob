@@ -2,7 +2,9 @@ package Libs.API.ir.parham.SeasonJobsAPI.Event
 
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobCreateEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobDeleteEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEditEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Job.JobEvent
+import Libs.API.ir.parham.SeasonJobsAPI.Event.Member.MemberEvent
 
 class SeasonEventManager
 {
@@ -33,7 +35,24 @@ class SeasonEventManager
                     {
                         return
                     }
-                    else
+                    else if (event is JobCreateEvent && function.parameters[0].type == JobCreateEvent::class.java)
+                    {
+                        function.invoke(listener, event)
+                    }
+                    else if (event is JobDeleteEvent && function.parameters[0].type == JobDeleteEvent::class.java)
+                    {
+                        function.invoke(listener, event)
+                    }
+                    else if (event is JobEditEvent && function.parameters[0].type == JobEditEvent::class.java)
+                    {
+                        function.invoke(listener, event)
+                    }
+                    else if (event is MemberEvent && function.parameters[0].type == MemberEvent::class.java)
+                    {
+                        function.invoke(listener, event)
+                    }
+
+                    if (event !is MemberEvent && function.parameters[0].type != MemberEvent::class.java)
                     {
                         function.invoke(listener, event)
                     }
