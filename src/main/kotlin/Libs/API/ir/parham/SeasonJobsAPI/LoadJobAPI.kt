@@ -12,12 +12,14 @@ import ir.parham.seasonJob.Updater
 import org.bukkit.plugin.Plugin
 import java.io.File
 
+
 class LoadJobAPI {
     companion object
     {
         var PluginFolder : File? = null
         var Instance : Plugin? = null
     }
+    val logger : Logger = Logger()
 
     fun LoadJobAPI() : Boolean {
         PluginFolder = SeasonJob.instance?.dataFolder
@@ -25,7 +27,6 @@ class LoadJobAPI {
 
         if (PluginFolder != null && Instance != null)
         {
-            val logger : Logger = Logger()
             logger.log("&6&l&n==============================SeasonJobs==============================")
             logger.log("&6Wiki&7: &ahttps://github.com/Parham099/SeasonJobs-Api")
             logger.log("")
@@ -65,7 +66,7 @@ class LoadJobAPI {
         }
         else
         {
-            println("&cPlugin Disabled &4Instance &cOr &4PluginFolder &cIs Null.")
+            logger.log("&cPlugin Disabled &4Instance &cOr &4PluginFolder &cIs Null.")
             return false
         }
     }

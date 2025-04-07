@@ -4,6 +4,7 @@ import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Commands
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Message
 import ir.parham.SeasonJobsAPI.Actions.Job
+import ir.parham.SeasonJobsAPI.Actions.Member
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
@@ -39,6 +40,9 @@ class Invite : Commands {
         } else if (sender is Player && data.containsKey(Bukkit.getPlayer(args[1])!!.uniqueId) && Config().get(Configs.CONFIG)!!.getBoolean("invite-cooldown")) {
             sender.sendMessage(message.get(sender, "cooldown"))
             // cooldown
+        } else if (Member().contains(Bukkit.getPlayer(args[1])!!.uniqueId)) {
+            sender.sendMessage(message.get(sender, "playerIsEmploy"))
+            // player has job
         } else {
             invite.put(Bukkit.getPlayer(args[1])!!.uniqueId, args[2])
             inviters.put(Bukkit.getPlayer(args[1])!!.uniqueId, sender.name)

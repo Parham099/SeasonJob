@@ -14,6 +14,10 @@ import org.bukkit.configuration.file.FileConfiguration
 import java.util.UUID
 
 open class Job {
+    val luckperms = Luckperms()
+    val logger = Logger()
+
+
     class Jobs(val Name: String,val MaxWarn: Int, val MemberSize: Int, val PlayTime : Int, val Prefix : String, val Suffix : String)
     {
         init
@@ -62,7 +66,7 @@ open class Job {
                         jobCreateEvent.getPrefix(),
                         jobCreateEvent.getSuffix()
                     )
-                    Luckperms().createGroup(jobCreateEvent.getName())
+                    luckperms.createGroup(jobCreateEvent.getName())
                     return true
                 }
 
@@ -96,7 +100,7 @@ open class Job {
                         jobSetEvent.getPrefix(),
                         jobSetEvent.getSuffix()
                     )
-                    Luckperms().createGroup(name)
+                    luckperms.createGroup(name)
                     return true
                 }
             }
@@ -141,7 +145,7 @@ open class Job {
                 {
                     jobs.remove(name)
                     jobList.remove(name)
-                    Luckperms().deleteGroup(name)
+                    luckperms.deleteGroup(name)
 
                     return true
                 }
@@ -181,7 +185,7 @@ open class Job {
                 return true
             } catch (e : Exception)
             {
-                Logger().log("Exception while saving job ($name)")
+                logger.log("Exception while saving job ($name)")
                 return false
             }
         }
@@ -222,7 +226,7 @@ open class Job {
         }
         catch (e : Exception)
         {
-            Logger().log("Exception while loading job ($name)")
+            logger.log("Exception while loading job ($name)")
             return false
         }
     }

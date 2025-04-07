@@ -8,10 +8,9 @@ import ir.parham.seasonJob.Commands.Default.Invite
 import ir.parham.seasonJob.SeasonJob.Companion.instance
 import org.bukkit.Bukkit
 import kotlinx.coroutines.*
-import kotlin.math.min
-import ir.parham.seasonJob.Updater.run as run
 
 object Updater {
+    val autosaveTime = 10
     var minuteCalculator = 0
 
 
@@ -21,29 +20,41 @@ object Updater {
         {
             // run async task
             run()
-        }, 1, (20 * 60).toLong() * 10)
+        }, 1, (20 * 60).toLong())
     }
 
     @Synchronized // async running
     fun run()
+    {
+        minuteCalculator++ // add one to calculated minute
+
+        clearInvite()
+        `addPlaytime's`()
+        autoSave()
+    }
+    fun clearInvite()
+    {
+        Invite.data.clear() // clear invite cooldown
+    }
+    fun `addPlaytime's`()
     {
         // add player playtime
         for (p in Bukkit.getOnlinePlayers()) {
             val member = Member()
             member.addMinPlaytime(p.uniqueId, 1)
         }
-        minuteCalculator++ // add one to calculated minute
-        Invite.data.clear() // clear invite cooldown
-
+    }
+    fun autoSave()
+    {
         // check autosave
-        if (minuteCalculator == 10 && Config().get(Configs.CONFIG)!!.getBoolean("auto-save-data"))
+        if (minuteCalculator == autosaveTime && Config().get(Configs.CONFIG)!!.getBoolean("auto-save-data"))
         {
             // if is enabled run this
 
             // save all members data
             Member().saveAll()
             // send log on console
-            Logger().log("&aMembers data auto saved - next: 10min")
+            Logger().log("&aMembers data auto saved - next: $autosaveTime in")
 
             // reset calculator to zero
             minuteCalculator = 0

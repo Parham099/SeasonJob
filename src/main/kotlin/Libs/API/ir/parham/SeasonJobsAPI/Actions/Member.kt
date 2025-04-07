@@ -18,6 +18,10 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Member(val admin: String = "No Information") {
+    val luckperms = Luckperms()
+    val logger = Logger()
+
+
     class Members(val UUID : UUID, val Warns : Int, val PlayTime : Int, val JobName : String)
     {
         companion object
@@ -59,7 +63,7 @@ class Member(val admin: String = "No Information") {
 
             if (!memberEvent.isCancelled())
             {
-                Luckperms().addRank(uuid, jobName)
+                luckperms.addRank(uuid, jobName)
             }
             else
             {
@@ -109,8 +113,8 @@ class Member(val admin: String = "No Information") {
                     membersByJob.put(playerJob.JobName, listMembs)
                 }
                 members.remove(uuid)
-                Luckperms().removeRank(uuid, playerJob.JobName)
-                Luckperms().addRank(uuid, "default")
+                luckperms.removeRank(uuid, playerJob.JobName)
+                luckperms.addRank(uuid, "default")
                 return true;
             }
         }
@@ -177,7 +181,7 @@ class Member(val admin: String = "No Information") {
 
             if (dataSection.contains("warn") && dataSection.contains("playtime"))
             {
-                if (Luckperms().isEnable())
+                if (luckperms.isEnable())
                 {
                     LuckPermsProvider.get().userManager.loadUser(uuid)
                 }
@@ -191,7 +195,7 @@ class Member(val admin: String = "No Information") {
         }
         catch (e : Exception)
         {
-            Logger().log("Exception loading members ($uuid)")
+            logger.log("Exception loading members ($uuid)")
         }
     }
 
@@ -223,7 +227,7 @@ class Member(val admin: String = "No Information") {
             }
             catch (e : Exception)
             {
-                Logger().log("Exception while loading player ($uuid)")
+                logger.log("Exception while loading player ($uuid)")
             }
         }
         return false

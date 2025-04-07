@@ -25,8 +25,10 @@ class SeasonJob : JavaPlugin() {
         val load = LoadJobAPI()
         load.LoadJobAPI()
 
-        Bukkit.getPluginManager().registerEvents(List(), this)
-        Bukkit.getPluginManager().registerEvents(ListMember(), this)
+        val manager = Bukkit.getPluginManager()
+
+        manager.registerEvents(List(), this)
+        manager.registerEvents(ListMember(), this)
         Bukkit.getPluginCommand("seasonjob")?.setExecutor(MainCommands())
     }
 
