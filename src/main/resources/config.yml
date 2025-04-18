@@ -1,4 +1,5 @@
-luckperms-sync: false # create jobs luckperms rank
+luckperms-sync: true # create jobs luckperms rank
+luckperms-update-checker: true # always check players ranks update in luckperms to give job note: 1(need luckperms depends)
 invite-cooldown: true # enable and disable invite cooldown for 1min
 auto-save-data: true # auto save all player data in all 10min
 editor-gui: true

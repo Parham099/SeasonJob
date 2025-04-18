@@ -92,76 +92,75 @@ class ListMember : Commands, Listener
     @EventHandler
     fun event(e: InventoryClickEvent)
     {
-        if (Job().list().contains(e.view.title))
-        {
-            e.isCancelled = true
-            if (e.currentItem == null) return
+        try {
+            if (Job().list().contains(e.view.title)) {
+                e.isCancelled = true
+                if (e.currentItem == null) return
 
-            val members = Member().getJobMembers(e.view.title)
-            var job = Job().get(e.view.title)
+                val members = Member().getJobMembers(e.view.title)
+                var job = Job().get(e.view.title)
 
-            if (e.currentItem!!.type == Material.RED_STAINED_GLASS_PANE)
-            {
-                if (players.containsKey(e.view.player.uniqueId))
-                {
-                    if (players.get(e.view.player.uniqueId)!! > 1)
-                    {
-                        players.put(e.view.player.uniqueId, players.get(e.view.player.uniqueId)!!.minus(1))
+                if (e.currentItem!!.type == Material.RED_STAINED_GLASS_PANE) {
+                    if (players.containsKey(e.view.player.uniqueId)) {
+                        if (players.get(e.view.player.uniqueId)!! > 1) {
+                            players.put(e.view.player.uniqueId, players.get(e.view.player.uniqueId)!!.minus(1))
+                        }
+                    } else {
+                        players.put(e.view.player.uniqueId, 1)
+                    }
+                } else if (e.currentItem!!.type == Material.LIME_STAINED_GLASS_PANE) {
+                    if (players.containsKey(e.view.player.uniqueId)) {
+                        players.put(e.view.player.uniqueId, players.get(e.view.player.uniqueId)!!.plus(1))
+                    } else {
+                        players.put(e.view.player.uniqueId, 1)
                     }
                 }
-                else
-                {
-                    players.put(e.view.player.uniqueId, 1)
-                }
             }
-            else if (e.currentItem!!.type == Material.LIME_STAINED_GLASS_PANE)
-            {
-                if (players.containsKey(e.view.player.uniqueId))
-                {
-                    players.put(e.view.player.uniqueId, players.get(e.view.player.uniqueId)!!.plus(1))
+
+
+            var job = Job().get(e.view.title)
+            val inv = Bukkit.createInventory(null, 54, job!!.Name)
+
+            inv.setItem(45, ItemStack(Material.RED_STAINED_GLASS_PANE))
+            inv.setItem(53, ItemStack(Material.LIME_STAINED_GLASS_PANE))
+
+            var count = 1
+            var number = 1
+            for (p in Member().getJobMembers(job.Name)) {
+                if (number == 54) {
+                    count++
                 }
-                else
-                {
-                    players.put(e.view.player.uniqueId, 1)
+                if (count == players.get(e.view.player.uniqueId)) {
+                    val member = Member().get(p)
+
+                    val i = ItemStack(Material.PLAYER_HEAD)
+                    val meta = i.itemMeta
+                    meta!!.setDisplayName(cc("&6${Bukkit.getOfflinePlayer(member!!.UUID).name}"))
+                    meta.lore = listOf(
+                        "",
+                        cc("&6Warns: &e${member.Warns}&6/&e${job.MaxWarn}"),
+                        cc(
+                            "&6Playtime: &e${
+                                PlaceholderAPI().setPaPi(
+                                    "%seasonjobs_playetime_p_hours%",
+                                    Bukkit.getOfflinePlayer(member.UUID)
+                                )
+                            }"
+                        )
+                    )
+                    i.itemMeta = meta
+
+                    inv.addItem(i)
                 }
+                number++
             }
+
+            e.view.player.openInventory(inv)
         }
-
-
-        var job = Job().get(e.view.title)
-        val inv = Bukkit.createInventory(null, 54, job!!.Name)
-
-        inv.setItem(45, ItemStack(Material.RED_STAINED_GLASS_PANE))
-        inv.setItem(53, ItemStack(Material.LIME_STAINED_GLASS_PANE))
-
-        var count = 1
-        var number = 1
-        for (p in Member().getJobMembers(job.Name))
+        catch (ignored: Exception)
         {
-            if (number == 54)
-            {
-                count++
-            }
-            if (count == players.get(e.view.player.uniqueId))
-            {
-                val member = Member().get(p)
 
-                val i = ItemStack(Material.PLAYER_HEAD)
-                val meta = i.itemMeta
-                meta!!.setDisplayName(cc("&6${Bukkit.getOfflinePlayer(member!!.UUID).name}"))
-                meta.lore = listOf(
-                    "",
-                    cc("&6Warns: &e${member.Warns}&6/&e${job.MaxWarn}"),
-                    cc("&6Playtime: &e${PlaceholderAPI().setPaPi("%seasonjobs_playetime_p_hours%", Bukkit.getOfflinePlayer(member.UUID))}")
-                )
-                i.itemMeta = meta
-
-                inv.addItem(i)
-            }
-            number++
         }
-
-        e.view.player.openInventory(inv)
     }
 
     override fun completer(sender: CommandSender, args: Array<out String>): List<String> {

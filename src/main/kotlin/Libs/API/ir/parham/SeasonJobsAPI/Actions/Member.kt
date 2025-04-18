@@ -6,8 +6,6 @@ import Libs.API.ir.parham.SeasonJobsAPI.Event.Member.MemberEvent
 import Libs.API.ir.parham.SeasonJobsAPI.Event.Member.MemberEventType
 import Libs.API.ir.parham.SeasonJobsAPI.Event.SeasonEventManager
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
-import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.members
-import ir.parham.SeasonJobsAPI.Actions.Member.Members.Companion.membersByJob
 
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import net.luckperms.api.LuckPermsProvider
@@ -20,16 +18,14 @@ import kotlin.collections.HashMap
 class Member(val admin: String = "No Information") {
     val luckperms = Luckperms()
     val logger = Logger()
-
+    companion object
+    {
+        val membersByJob : HashMap<String, List<UUID>> = HashMap()
+        val members : HashMap<UUID,Members> = HashMap()
+    }
 
     class Members(val UUID : UUID, val Warns : Int, val PlayTime : Int, val JobName : String)
     {
-        companion object
-        {
-            val membersByJob : HashMap<String, List<UUID>> = HashMap()
-            val members : HashMap<UUID,Members> = HashMap()
-        }
-
         init
         {
             members.put(UUID, this)
@@ -161,6 +157,7 @@ class Member(val admin: String = "No Information") {
         return list().contains(uuid)
     }
 
+    // run load all synchronized
     @Synchronized
     fun loadAll()
     {
@@ -233,13 +230,17 @@ class Member(val admin: String = "No Information") {
         return false
     }
 
-    @Synchronized
+    // async save all
     fun saveAll()
     {
-        for (key in members.keys)
-        {
-            save(key)
-        }
+        val tst = Thread(Runnable {
+            for (key in members.keys)
+            {
+                save(key)
+            }
+        }, UUID.randomUUID().toString())
+
+        tst.start()
     }
 
     fun getJobMembers(jobName: String) : List<UUID>

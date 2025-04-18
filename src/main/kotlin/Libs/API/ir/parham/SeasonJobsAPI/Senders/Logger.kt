@@ -11,6 +11,7 @@ class Logger {
     }
     fun colorize(arg : String) : String
     {
-        return ChatColor.translateAlternateColorCodes('&', arg)
+        val c = ChatColor.translateAlternateColorCodes('&', arg)
+        return c
     }
 }

@@ -46,7 +46,7 @@ list-members-usage: '&e/job listmembers <jobname>'
 info: "
          &e&l%player_name%\n
 &6&lJobName: &e%seasonjobs_name%\n
-&6&lPlaytime: &e%seasonjobs_playtime_p_hour%\n
+&6&lPlaytime: &e%seasonjobs_playtime_p_hours%\n
 &6&lWarn: &a%seasonjobs_warns%&8/&4%seasonjobs_warns_max%\n
 &e&l============= %player_name%&e&l =============\n"
 

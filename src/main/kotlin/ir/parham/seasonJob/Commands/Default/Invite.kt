@@ -51,7 +51,7 @@ class Invite : Commands {
                 data.put(sender.uniqueId, 60)
             }
             sender.sendMessage(message.get(sender, "SInviteSucc"))
-            sender.sendMessage(message.get(sender, "RInviteSucc"))
+            Bukkit.getPlayer(args[1])?.sendMessage(message.get(sender, "RInviteSucc"))
             // invite successes
         }
     }

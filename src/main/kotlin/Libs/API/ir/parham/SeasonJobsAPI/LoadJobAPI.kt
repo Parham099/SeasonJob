@@ -49,7 +49,6 @@ class LoadJobAPI {
             logger.log("&2Users &aAre Loading &7...")
             Member().loadAll()
             logger.log("&2Users &aAre Loaded.")
-
 //            logger.log("&2Editor GUI &aStyle Are Loading &7...")
 //            if (Config().get(Configs.CONFIG)?.getBoolean("editor-gui") == true)
 //            {

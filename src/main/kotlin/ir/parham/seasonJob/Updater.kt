@@ -2,6 +2,7 @@ package ir.parham.seasonJob
 
 import Libs.API.ir.parham.SeasonJobsAPI.DriverManager.Config
 import Libs.API.ir.parham.SeasonJobsAPI.Senders.Logger
+import ir.parham.SeasonJobsAPI.Actions.Job
 import ir.parham.SeasonJobsAPI.Actions.Member
 import ir.parham.SeasonJobsAPI.DriverManager.Configs
 import ir.parham.seasonJob.Commands.Default.Invite
@@ -18,13 +19,17 @@ object Updater {
         // run all as all one minute
         Bukkit.getScheduler().runTaskTimer(instance!!, Runnable
         {
-            // run async task
+            // run update tasks task
             run()
         }, 1, (20 * 60).toLong())
+
+        if (Config().get(Configs.CONFIG)?.getBoolean("luckperms-update-checker") == true)
+        {
+            FiveSecCheck()
+        }
     }
 
-    @Synchronized // async running
-    fun run()
+    private fun run()
     {
         minuteCalculator++ // add one to calculated minute
 
@@ -32,11 +37,13 @@ object Updater {
         `addPlaytime's`()
         autoSave()
     }
-    fun clearInvite()
+    private fun clearInvite()
     {
         Invite.data.clear() // clear invite cooldown
     }
-    fun `addPlaytime's`()
+
+    // this code part is sync
+    private fun `addPlaytime's`()
     {
         // add player playtime
         for (p in Bukkit.getOnlinePlayers()) {
@@ -44,7 +51,7 @@ object Updater {
             member.addMinPlaytime(p.uniqueId, 1)
         }
     }
-    fun autoSave()
+    private fun autoSave()
     {
         // check autosave
         if (minuteCalculator == autosaveTime && Config().get(Configs.CONFIG)!!.getBoolean("auto-save-data"))
@@ -58,6 +65,47 @@ object Updater {
 
             // reset calculator to zero
             minuteCalculator = 0
+        }
+    }
+
+    private fun FiveSecCheck()
+    {
+        Bukkit.getScheduler().runTaskTimer(instance!!, Runnable {
+            luckpermsChecker()
+        }, 1, 20)
+    }
+    private fun luckpermsChecker()
+    {
+        for (p in Bukkit.getOnlinePlayers())
+        {
+
+            if (p.hasPermission("*") || p.isOp)
+            {
+                continue
+            }
+            try
+            {
+                val jobs = Job().list()
+                val member = Member()
+
+                for (job in jobs)
+                {
+                    if (p.hasPermission("group.$job"))
+                    {
+                        member.add(p.uniqueId, job)
+                        break
+                    }
+                    else
+                    {
+                        member.remove(p.uniqueId, false)
+                        continue
+                    }
+                }
+            }
+            catch (ex: Exception)
+            {
+                ex.printStackTrace()
+            }
         }
     }
 }

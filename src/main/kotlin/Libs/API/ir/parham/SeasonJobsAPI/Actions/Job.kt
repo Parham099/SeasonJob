@@ -86,6 +86,7 @@ open class Job {
         try {
             if (contains(name))
             {
+                Jobs(name, maxWarn, memberSize, playTime, prefix, suffix)
                 val jobSetEvent = JobEditEvent(get(name)!!)
                 SeasonEventManager().fireEvent(jobSetEvent)
                 if (!jobSetEvent.isCancelled())
@@ -175,10 +176,12 @@ open class Job {
                     section.createSection("suffix")
                     section.createSection("members")
                     section.createSection("playtime")
+                    section.createSection("maxWarn")
                     section.set("prefix", get(key)?.Prefix)
                     section.set("suffix", get(key)?.Suffix)
                     section.set("members", get(key)?.MemberSize)
                     section.set("playtime", get(key)?.PlayTime)
+                    section.set("maxWarn", get(key)?.MaxWarn)
                 }
 
                 Config().save(Configs.JOBS, jobsConfig)
@@ -199,7 +202,14 @@ open class Job {
 
         for (key in jobsConfig.getKeys(false))
         {
-            load(key)
+            try
+            {
+                load(key)
+            }
+            catch (e: Exception)
+            {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -231,7 +241,9 @@ open class Job {
         }
     }
 
+
     @Synchronized
+    // sync task
     fun saveAll()
     {
         for (key in jobList)
