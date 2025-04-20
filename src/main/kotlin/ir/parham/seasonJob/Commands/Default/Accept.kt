@@ -40,6 +40,7 @@ class Accept : Commands {
     }
 
     override fun adder(target: OfflinePlayer) {
+        Member().remove(target.uniqueId)
         Member(Invite.inviters.get(target.uniqueId).toString()).add(target.uniqueId, Invite.invite.get(target.uniqueId)!!)
     }
 
