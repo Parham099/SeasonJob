@@ -32,7 +32,8 @@ maxWarnAndKick: '&cPlayer warn limit is filled and member is kicked.'
 SInviteSucc: '&aInvite is sended to player'
 RInviteSucc: '&aYou have a new job invite (/job <accept/deny>)'
 jobAccepted: '&aYou are accept a new job, your welcome'
-playerIsEmploy: '&cPlayer is empoyed,'
+playerIsNotEmploy: '&cPlayer dont has a job.'
+playerIsEmploy: '&cPlayer is Employ,'
 inviteUsage: '&6/invite <user> <job>'
 cooldown: '&cYou are at cooldown.'
 kickUsage: '&6/kick <username>'
@@ -41,10 +42,12 @@ leaveSuccess: '&aYou are leave from your job.'
 infoUsage: '&e/job info <user>'
 list-members-usage: '&e/job listmembers <jobname>'
 
+save-all-process: '&eSaving all on process ...'
+save-all-finished: '&aSave all process finished.'
 
 # place a \n for get next line
 info: "
-         &e&l%player_name%\n
+\n&e&l============= %player_name%&e&l =============\n
 &6&lJobName: &e%seasonjobs_name%\n
 &6&lPlaytime: &e%seasonjobs_playtime_p_hours%\n
 &6&lWarn: &a%seasonjobs_warns%&8/&4%seasonjobs_warns_max%\n

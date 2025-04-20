@@ -15,17 +15,19 @@ class Kick : Commands {
 
     override fun runner(sender: CommandSender, args: Array<out String>) {
         val message = Message()
+        val member = Member()
+
         if (args.size < 2) {
             // usage
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "kickUsage"))
         } else if (Bukkit.getOfflinePlayer(args[1]) == null) {
             // player not found
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(args[1]), "playerNotExits"))
-        } else if (!Member().contains(Bukkit.getOfflinePlayer(args[1]).uniqueId)) {
+        } else if (!member.contains(Bukkit.getOfflinePlayer(args[1]).uniqueId)) {
             // is employed
             val player = Bukkit.getOfflinePlayer(args[1])
-            sender.sendMessage(message.get(player, "playerIsEmploy"))
-        } else if (!sender.hasPermission("seasonjobs.kick." + Member().get(Bukkit.getOfflinePlayer(args[1]).getUniqueId()))) {
+            sender.sendMessage(message.get(player, "playerIsNotEmploy"))
+        } else if (!sender.hasPermission("seasonjobs.kick." + member.get(Bukkit.getOfflinePlayer(args[1]).getUniqueId())!!.JobName)) {
             // deny perm
             val player = Bukkit.getOfflinePlayer(args[1])
             sender.sendMessage(message.get(player, "denyPerm"))

@@ -40,7 +40,7 @@ class List : Commands, Listener {
                         c("&ePrefix: &6${selectedJob!!.Prefix}"),
                         c("&eSuffix: &6${selectedJob.Suffix}"),
                         c("&ePlayTime: &6${selectedJob.PlayTime}"),
-                        c("&eMaxWarn: &6${selectedJob.MemberSize}"),
+                        c("&eMaxWarn: &6${selectedJob.MaxWarn}"),
                         c("&eMemberSize: &a${Job().getJobMembersSize(key).toString()}&8/&4${selectedJob.MemberSize.toString()}"))
 
                     meta.setDisplayName(c("&6${key}"))

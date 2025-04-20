@@ -63,6 +63,8 @@ class MainCommands : CommandExecutor, TabCompleter
             "info" -> {Info().runner(sender, args)}
             "deny" -> {Deny().runner(sender, args)}
             "accept" -> {Accept().runner(sender, args)}
+            "save-all" -> {SaveAll().runner(sender, args)}
+            "--v" -> {Version().runner(sender, args)}
             else -> {
                 val mess = Message()
                 sender.sendMessage(mess.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "help"))
@@ -73,7 +75,7 @@ class MainCommands : CommandExecutor, TabCompleter
 
     override fun onTabComplete(p0: CommandSender,p1: Command, p2: String, args: Array<out String>?): List<String> {
         if (args!!.size == 1) {
-            return listOf("admin", "list", "warn", "invite", "leave", "kick", "deny", "accept", "info", "listmembers")
+            return listOf("admin", "list", "warn", "invite", "leave", "kick", "deny", "accept", "info", "listmembers", "--v", "save-all")
         }
         if (!args.isEmpty()) {
             if (args[0].equals("admin", true) && args.size == 2) {
@@ -81,7 +83,6 @@ class MainCommands : CommandExecutor, TabCompleter
             } else {
                 when (args[0].lowercase()) {
                     "listmembers" -> {return ListMember().completer(p0, args)}
-                    "list" -> {}
                     "warn" -> {return Warn().completer(p0, args)}
                     "invite" -> {return Invite().completer(p0, args)}
                     "leave" -> {return Leave().completer(p0, args)}

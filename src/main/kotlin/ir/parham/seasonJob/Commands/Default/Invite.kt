@@ -22,6 +22,8 @@ class Invite : Commands {
     }
     override fun runner(sender: CommandSender, args: Array<out String>) {
         val message = Message()
+        val member = Member()
+
         // job invite <player> <job>
         if (sender !is Player) {
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "denyConsole"))
@@ -37,10 +39,10 @@ class Invite : Commands {
         } else if (!Bukkit.getOfflinePlayer(args[1]).isOnline) {
             sender.sendMessage(message.get(sender, "playerNotExits"))
             // player notfound
-        } else if (sender is Player && data.containsKey(Bukkit.getPlayer(args[1])!!.uniqueId) && Config().get(Configs.CONFIG)!!.getBoolean("invite-cooldown")) {
+        } else if (data.containsKey(Bukkit.getPlayer(args[1])!!.uniqueId) && Config().get(Configs.CONFIG)!!.getBoolean("invite-cooldown")) {
             sender.sendMessage(message.get(sender, "cooldown"))
             // cooldown
-        } else if (Member().contains(Bukkit.getPlayer(args[1])!!.uniqueId)) {
+        } else if (member.contains(Bukkit.getPlayer(args[1])!!.uniqueId) && !member.get(Bukkit.getPlayer(args[1])!!.uniqueId)?.JobName.equals("default", ignoreCase = true)) {
             sender.sendMessage(message.get(sender, "playerIsEmploy"))
             // player has job
         } else {

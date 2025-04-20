@@ -21,7 +21,7 @@ class Warn: Commands {
             sender.sendMessage(message.get(Bukkit.getOfflinePlayer(UUID.randomUUID()), "warnUsage"))
         } else if (Bukkit.getOfflinePlayer(args[2]) == null || !Member().contains(Bukkit.getOfflinePlayer(args[2]).uniqueId)) {
             // player is employed
-            sender.sendMessage(message.get(Bukkit.getOfflinePlayer(args[2]), "playerIsEmploy"))
+            sender.sendMessage(message.get(Bukkit.getOfflinePlayer(args[2]), "playerIsNotEmploy"))
         } else {
             val p = Bukkit.getOfflinePlayer(args[2])
             val member = Member().get(p.uniqueId)!!

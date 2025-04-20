@@ -23,7 +23,7 @@ class Leave : Commands {
             sender.sendMessage(message.get(sender, "denyPerm"))
         } else if (!Member().contains(sender.uniqueId)) {
             // player is employed
-            sender.sendMessage(message.get(sender, "playerIsEmploy"))
+            sender.sendMessage(message.get(sender, "playerIsNotEmploy"))
         } else {
             admin = sender.uniqueId.toString()
 
