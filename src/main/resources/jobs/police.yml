@@ -1,0 +1,8 @@
+prefix: "&9&lPolice"
+suffix: ""
+
+parent: fbi
+warn: 3
+playtime: 0 # per sec
+member-size: 20
+members: []

@@ -1,0 +1,8 @@
+prefix: "&3&lFBI"
+suffix: ""
+
+parent: -1
+warn: 3
+playtime: 0 # per sec
+member-size: 20
+members: []

@@ -1,0 +1,75 @@
+# Messages doesnt support buildout placeholders
+#Plugin prefix
+prefix: "&aSeasonJobs &2» "
+
+deny-console: "&cYou cant excute this command from console."
+
+usage-invite: "&e/job invite <player> <job>"
+deny-permission-invite: "&cYou dont have permission to send a invite for this job."
+invalid-player-invite: "&4You cant invite a offline player!"
+cooldown-invite: "&cYou are at cooldown now please wait &4{cooldown} &cand test again."
+employed-invite: "&cPlayer has a job!"
+job-not-found-invite: "&cThis job is not found."
+sender-invite: "&aInvite success send to player for &7{job}"
+getter-invite: "&bYou have a invite from &7{job}"
+
+doesnt-have-invite-accept: "&cYou dont have any invite."
+employed-accept: "&cYou cant have two job."
+accepted-accept: "&aJob accepted."
+
+doesnt-have-invite-deny: "&cYou dont have any invite."
+denied-deny: "&aJob invite denied."
+
+deny-permission-leave: "&cYou dont have permission to send a invite for this job."
+unemployed-leave: "&cYou doesnt have any job."
+success-leave: "&aYou are leaved from your job."
+
+usage-kick: "&e/job kick <player>"
+unemployed-kick: "&cPlayer is unemployed."
+deny-permission-kick: "&cJust leaders can kick members."
+success-kick: "&2Player success kicked."
+
+usage-promote: "&e/job promote <player>"
+unemployed-promote: "&cPlayer is unemployed."
+deny-permission-promote: "&4Only leaders can promote"
+doesnt-have-parent-promote: "&4Player job doesnt have parent to promote."
+success-promote: "&aPlayer success promoted"
+error-promote: "&4Player is on highest rank."
+
+usage-depromote: "&e/job depromote <player>"
+unemployed-depromote: "&cPlayer is unemployed."
+deny-permission-depromote: "&4Only leaders can depromote"
+success-depromote: "&aPlayer success depromoted"
+error-depromote: "&4Player is on lowest rank."
+
+usage-warn: "&e/job warn [add/take/clear] <player>"
+unemployed-warn: "&cPlayer is unemployed."
+deny-permission-warn: "&4Only leaders can manage warns."
+clear-warn: "&bPlayer warns success cleared &aNow: {warn}"
+add-warn: "&bPlayer warns success added &aNow: {warn}"
+take-warn: "&bPlayer warns success removed &aNow: {warn}"
+
+usage-listmembers: "&e/job listmembers &6<player>"
+deny-permissiong-listmembers: "&cYou dont have permission to see list members."
+job-not-found: "&cJob not founded."
+success-open-listmembers:
+
+deny-permission-info: "&cYou dont have permission to see info."
+usage-info: "&e/job info <player>"
+
+# use \n to get next line
+unemployed-info: "\n
+&6&l&m=======================================\n
+&6&lName: &e%player_name% \n
+&6&lJob: &f&lCitizen \n
+&6&lWarn: &e0/Infinity \n
+&6&l&m=======================================
+"
+employed-info: "\n
+&6&l&m=======================================\n
+&6&lName: &e%player_name% \n
+&6&lJob: %seasonjobs_prefix% &e(%seasonjobs_name%) \n
+&6&lWarn: &e%seasonjobs_warns%&6/&e%seasonjobs_warns_max% \n
+&6&lPlaytime: &e%seasonjobs_playtime_p_hours% \n
+&6&l&m=======================================
+"

@@ -1,13 +1,15 @@
+
 name: SeasonJob
-version: '2.2.0'
-main: ir.parham.seasonJob.SeasonJob
+version: '1.0-SNAPSHOT'
+main: org.parham.seasonjob.SeasonJob
 api-version: '1.18'
 
-commands:
-  seasonjob:
-    aliases:
-      - job
-      - jobs
 softdepend:
-  - LuckPerms
+  - Luckperms
   - PlaceholderAPI
+
+
+commands:
+  job:
+    aliases:
+      - 'jobs'
