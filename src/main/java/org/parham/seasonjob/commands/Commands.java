@@ -5,6 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.parham.seasonjob.data.job.Job;
+import org.parham.seasonjob.data.job.JobManager;
+import org.parham.seasonjob.data.job.Leader;
+import org.parham.seasonjob.data.job.LeaderAccess;
+import org.parham.seasonjob.data.member.Member;
+import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
 import java.util.*;
@@ -15,7 +21,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (args.length < 1 || !commands.containsKey(args[0])) {
-            // help message
+            sender.sendMessage(Messages.getMessage("help-message"));
         } else {
             SeasonCommand seasonCommand = commands.get(args[0]);
 
@@ -29,7 +35,27 @@ public class Commands implements CommandExecutor, TabCompleter {
             if (editedArgs.size() < seasonCommand.getNeedArguments()) {
                 sender.sendMessage(seasonCommand.getUsage());
             } else {
-                seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]));
+
+                // check player is leader or not
+                if (Arrays.stream(LeaderAccess.values()).anyMatch(var -> var.name().equals(args[0].toUpperCase()))) {
+                    if (sender instanceof Player && MemberManager.contains(((Player) sender).getUniqueId())) {
+                        Player p = (Player) sender;
+                        Member member = MemberManager.getMember(p.getUniqueId());
+                        Job job = JobManager.getJob(member.getJob());
+
+                        if (job.getLeader().getUUID().equals(p.getUniqueId())) {
+                            Leader leader = job.getLeader();
+                            if (leader.isEnable()) {
+                                boolean hasAccess = leader.hasAccess(LeaderAccess.valueOf(args[0].toUpperCase()));
+
+                                seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]), true, hasAccess);
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]), false, true);
             }
         }
         return false;
@@ -48,7 +74,11 @@ public class Commands implements CommandExecutor, TabCompleter {
         if (args.length <= 1) {
             return Commands.commands.keySet().stream().toList();
         } else {
-            return commands.get(args[0]).getCompletions(args);
+            if (commands.containsKey(args[0])) {
+                return commands.get(args[0]).getCompletions(commandSender, args);
+            } else {
+                return Collections.emptyList();
+            }
         }
     }
 }

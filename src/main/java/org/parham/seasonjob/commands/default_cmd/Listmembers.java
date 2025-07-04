@@ -53,10 +53,10 @@ public class Listmembers implements SeasonCommand, Listener {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         Player player = (Player) sender;
 
-        if (hasPermission() && !player.hasPermission(getPermission())) {
+        if ((isLeader && !hasAccess) && (hasPermission() && !player.hasPermission(getPermission()))) {
             player.sendMessage(Messages.getMessage("deny-permissiong-listmembers"));
         } else if (args.length == 0 && !MemberManager.contains(player.getUniqueId())) {
             player.sendMessage(getUsage());
@@ -75,7 +75,7 @@ public class Listmembers implements SeasonCommand, Listener {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         return JobManager.getJobsList().stream().toList();
     }
 

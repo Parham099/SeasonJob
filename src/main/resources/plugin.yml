@@ -6,10 +6,16 @@ api-version: '1.18'
 
 softdepend:
   - Luckperms
+depend:
   - PlaceholderAPI
 
 
 commands:
   job:
     aliases:
+      - 'job'
       - 'jobs'
+      - 'gang'
+      - 'gangs'
+      - 'clan'
+      - 'clans'

@@ -1,8 +1,29 @@
 prefix: "&e&lTaxi"
 suffix: ""
+leader:
+  enable: true
+  uuid: null
+  accesses:
+    accept: false
+    deny: false
+    promote: true
+    depromote: true
+    info: true
+    invite: true
+    kick: true
+    leave: false
+    listmembers: true
+    peace: true
+    warn: true
+    war: true
+    setleader: false
 
 parent: -1
 warn: 3
+point: 0
 playtime: 0 # per sec
 member-size: 20
 members: []
+
+wars: []
+peaces: []

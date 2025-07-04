@@ -7,8 +7,7 @@ import org.parham.seasonjob.commands.SeasonCommand;
 import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Accept implements SeasonCommand {
     @Override
@@ -23,7 +22,7 @@ public class Accept implements SeasonCommand {
 
     @Override
     public String getPermission() {
-        return "";
+        return "seasonjob.accept";
     }
 
     @Override
@@ -37,14 +36,22 @@ public class Accept implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         Player player = (Player) sender;
         if (!Invite.invites.containsKey(player.getUniqueId())) {
             player.sendMessage(Messages.getMessage("doesnt-have-invite-accept"));
         } else if (MemberManager.contains(player.getUniqueId())) {
             player.sendMessage(Messages.getMessage("employed-accept"));
         } else {
-            String job = Invite.invites.get(player.getUniqueId());
+            Map<UUID, ArrayList<String>> invites = Invite.invites;
+
+            String job;
+
+            if (args.length > 0 && invites.get(player.getUniqueId()).contains(args[0])) {
+                job = args[0];
+            } else {
+                job = invites.get(player.getUniqueId()).get(invites.get(player.getUniqueId()).size() - 1);
+            }
 
             MemberManager.add(player.getUniqueId(), job);
             player.sendMessage(Messages.getMessage("accepted-accept"));
@@ -54,7 +61,11 @@ public class Accept implements SeasonCommand {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
-        return new ArrayList<>();
+    public List<String> getCompletions(CommandSender sender, String[] args) {
+        if (sender instanceof Player) {
+            return Invite.invites.get(((Player) sender).getUniqueId());
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

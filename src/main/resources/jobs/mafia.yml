@@ -1,4 +1,4 @@
-prefix: "&3&lFBI"
+prefix: "&4&lMafia"
 suffix: ""
 leader:
   enable: true
@@ -22,10 +22,10 @@ parent: -1
 warn: 3
 point: 0
 playtime: 0 # per sec
-member-size: 20
+member-size: 35
 members: []
 
 wars:
-  - mafia
-peaces:
   - police
+  - fbi
+peaces: []

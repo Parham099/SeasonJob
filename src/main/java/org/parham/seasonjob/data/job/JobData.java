@@ -1,19 +1,30 @@
 package org.parham.seasonjob.data.job;
 
 import static org.parham.seasonjob.data.job.JobManager.update;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.*;
 
 public class JobData implements Job {
-    String jobName;
+    String jobName = null;
+    Leader leader = null;
     List<UUID> users = new ArrayList<>();
-    String parent;
-    String prefix;
-    String suffix;
-    int warn;
-    int playtime;
-    int memberSize;
+    List<String> wars = new ArrayList<>();
+    List<String> peaces = new ArrayList<>();
+    String parent = "";
+    String prefix = "";
+    String suffix = "";
+    int point = 0;
+    int warn = 0;
+    int playtime = 0;
+    int memberSize = 0;
+
+    public JobData() {
+        Leader leader = new LeaderData();
+        for (LeaderAccess access : LeaderAccess.values()) {
+            leader.setAccess(access, false);
+        }
+        leader.setEnable(true);
+    }
 
     @Override
     public void delete() {
@@ -133,5 +144,137 @@ public class JobData implements Job {
     @Override
     public int getMemberSize() {
         return memberSize;
+    }
+
+    @Override
+    public void addPeace(Job job) {
+        peaces.add(job.getName());
+        update(this);
+    }
+
+    @Override
+    public void addPeace(String jobName) {
+        peaces.add(jobName);
+        update(this);
+    }
+
+    @Override
+    public void removePeace(Job job) {
+        peaces.remove(job.getName());
+        update(this);
+    }
+
+    @Override
+    public void removePeace(String jobName) {
+        peaces.remove(jobName);
+        update(this);
+    }
+
+    @Override
+    public List<String> getPeaces() {
+        return peaces;
+    }
+
+    @Override
+    public void setPeaces(List<String> peaceList) {
+        this.peaces.addAll(peaceList);
+        update(this);
+    }
+
+    @Override
+    public void clearPeaces() {
+        peaces.clear();
+        update(this);
+    }
+
+    @Override
+    public void addWar(Job job) {
+        wars.add(job.getName());
+        update(this);
+    }
+
+    @Override
+    public void addWar(String jobName) {
+        wars.add(jobName);
+        update(this);
+    }
+
+    @Override
+    public void removeWar(Job job) {
+        wars.remove(job.getName());
+        update(this);
+    }
+
+    @Override
+    public void removeWar(String jobName) {
+        wars.remove(jobName);
+        update(this);
+    }
+
+    @Override
+    public List<String> getWars() {
+        return wars;
+    }
+
+    @Override
+    public void setWars(List<String> warList) {
+        wars.addAll(warList);
+        update(this);
+    }
+
+    @Override
+    public void clearWars() {
+        wars.clear();
+        update(this);
+    }
+
+    @Override
+    public int getPoint() {
+        return point;
+    }
+
+    @Override
+    public void addPoint(int point) {
+        this.point += point;
+        update(this);
+    }
+
+    @Override
+    public void takePoint(int point) {
+        this.point -= point;
+        update(this);
+    }
+
+    @Override
+    public void setPoint(int point) {
+        this.point = point;
+        update(this);
+    }
+
+    @Override
+    public void setLeader(UUID uuid) {
+        leader.setUUID(uuid);
+
+        update(this);
+    }
+
+    @Override
+    public void setLeader(Leader leaderObject) {
+        leader = leaderObject;
+    }
+
+    @Override
+    public void removeLeader() {
+        leader.setUUID(null);
+    }
+
+    @Override
+    public Leader getLeader() {
+        return leader;
+    }
+
+    @Override
+    public void setLeaderPerm(LeaderAccess node, boolean isEnabled) {
+        leader.setAccess(node, isEnabled);
     }
 }

@@ -39,12 +39,15 @@ public class Warn implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
 
         if (!MemberManager.contains(player.getUniqueId())) {
             sender.sendMessage(Messages.getMessage("unemployed-warn"));
-        } else if (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(player.getUniqueId()).getJob())) {
+        } else if ((
+                isLeader && !hasAccess)
+                && (hasPermission()
+                && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(player.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-warn"));
         } else {
             Member member = MemberManager.getMember(player.getUniqueId());
@@ -69,7 +72,7 @@ public class Warn implements SeasonCommand {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         if (args.length == 2) {
             return List.of("clear", "add", "take");
         } else {

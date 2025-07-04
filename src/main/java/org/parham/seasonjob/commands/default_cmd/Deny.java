@@ -23,7 +23,7 @@ public class Deny implements SeasonCommand {
 
     @Override
     public String getPermission() {
-        return "";
+        return "seasonjob.deny";
     }
 
     @Override
@@ -37,23 +37,19 @@ public class Deny implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         Player player = (Player) sender;
 
         if (!Invite.invites.containsKey(player.getUniqueId())) {
             player.sendMessage(Messages.getMessage("doesnt-have-invite-deny"));
         } else {
-            String job = Invite.invites.get(player.getUniqueId());
-
-            MemberManager.add(player.getUniqueId(), job);
-            player.sendMessage(Messages.getMessage("denied-deny"));
-
             Invite.invites.remove(player.getUniqueId());
+            player.sendMessage(Messages.getMessage("denied-deny"));
         }
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 }

@@ -39,8 +39,8 @@ public class Info implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
-        if (hasPermission() && !sender.hasPermission(getPermission())) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
+        if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-info"));
         } else if (!(sender instanceof Player) && args.length == 0) {
             sender.sendMessage(getUsage());
@@ -61,7 +61,7 @@ public class Info implements SeasonCommand {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         return null;
     }
 }

@@ -19,5 +19,12 @@ public interface Member {
     void setPlaytime(int playtime);
     int getPlaytime();
 
+    int getPoint();
+    void addPoint(int point);
+    void takePoint(int point);
+    void setPoint(int point);
+
     void delete();
+
+    void setAsLeader();
 }

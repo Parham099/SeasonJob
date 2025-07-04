@@ -10,19 +10,25 @@ import org.parham.seasonjob.commands.Commands;
 import org.parham.seasonjob.commands.default_cmd.*;
 import org.parham.seasonjob.data.AutoSave;
 import org.parham.seasonjob.data.Playtime;
+import org.parham.seasonjob.data.Settings;
 import org.parham.seasonjob.data.job.JobManager;
 import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
-import org.parham.seasonjob.depend.Luckperms;
+import org.parham.seasonjob.depend.Luckperms.JobPermissionManager;
+import org.parham.seasonjob.depend.Luckperms.LuckpermsLoaded;
+import org.parham.seasonjob.depend.Luckperms.LuckpermsNotFound;
 import org.parham.seasonjob.depend.Placeholders;
+import org.parham.seasonjob.events.PeaceEvents;
+import org.parham.seasonjob.events.WarEvents;
 
 import java.io.File;
 import java.io.IOException;
 
 public final class SeasonJob extends JavaPlugin {
-    private static Plugin instance;
+    public static JobPermissionManager luckperms;
+    private static volatile Plugin instance;
     public static int cooldown; // invite cooldown
-    private static String ver = "3.0.0";
+    private static final String ver = "3.0.1";
 
     @Override
     public void onEnable() {
@@ -34,9 +40,12 @@ public final class SeasonJob extends JavaPlugin {
             saveResource("jobs/taxi.yml", false);
             saveResource("jobs/police.yml", false);
             saveResource("jobs/fbi.yml", false);
+            saveResource("jobs/mafia.yml", false);
         }
 
         try {
+            saveResource("settings.yml", false);
+            Settings.load();
             loader();
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage(color("&4An error occurred while loading the plugin."));
@@ -68,7 +77,21 @@ public final class SeasonJob extends JavaPlugin {
         }
 
         console.sendMessage(color("&a------------------------ &2SeasonJob &a------------------------"));
+        console.sendMessage("");
+        console.sendMessage(color("&fDependency Manager:"));
+        if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null || !getConfig().getBoolean("luck-perms")) {
+            luckperms = new LuckpermsNotFound();
+            console.sendMessage(color("&fLuckPerms Not Loaded"));
+            console.sendMessage(color("&7* Sync jobs with luckperms rank"));
+        } else {
+            luckperms = new LuckpermsLoaded();
+            luckperms.updater();
+            console.sendMessage(color("&6LuckPerms Loaded"));
+            console.sendMessage(color("&e* Sync jobs with luckperms rank"));
+        }
+        console.sendMessage("");
         console.sendMessage(color("&2Loading jobs..."));
+
         try {
             JobManager.loadAll();
             console.sendMessage(color("&aLoaded all jobs.&e " + JobManager.getJobsList()));
@@ -84,7 +107,7 @@ public final class SeasonJob extends JavaPlugin {
         try {
             MemberManager.loadAll();
             console.sendMessage(color("&aLoaded members."));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             console.sendMessage(color("&4The data folder could not be loaded. (&c" + e.getMessage() + "&4)"));
         }
 
@@ -116,19 +139,10 @@ public final class SeasonJob extends JavaPlugin {
         Commands.addCommand("warn", new Warn());
         Commands.addCommand("listmembers", new Listmembers());
         Commands.addCommand("info", new Info());
+        Commands.addCommand("war", new War());
+        Commands.addCommand("setleader", new SetLeader());
         Bukkit.getPluginCommand("job").setExecutor(new Commands());
         console.sendMessage(color("&2Commands loaded."));
-        console.sendMessage("");
-        console.sendMessage(color("&fDependency Manager:"));
-        Luckperms.checkEnabled();
-        if (!Luckperms.isEnable) {
-            console.sendMessage(color("&fLuckPerms Not Loaded"));
-            console.sendMessage(color("&7* Sync jobs with luckperms rank"));
-        } else {
-            Luckperms.updater();
-            console.sendMessage(color("&6LuckPerms Loaded"));
-            console.sendMessage(color("&e* Sync jobs with luckperms rank"));
-        }
         console.sendMessage("");
         console.sendMessage(color("&eLoadin listmembers ..."));
         Listmembers.listmembersSize = getInstance().getConfig().getInt("listmembers");
@@ -137,12 +151,15 @@ public final class SeasonJob extends JavaPlugin {
         console.sendMessage("");
         Playtime.updater();
         console.sendMessage(color("&2Playtime updater loading..."));
-        if (getInstance().getConfig().getBoolean("placeholders")) {
-            console.sendMessage("&eLoading placeholders...");
+        if (getInstance().getConfig().getBoolean("placeholders", true)) {
+            console.sendMessage(color("&eLoading placeholders..."));
             Placeholders.load();
         } else {
             console.sendMessage(color("&4Placeholders is deactivate."));
         }
+
+        Bukkit.getPluginManager().registerEvents(new PeaceEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new WarEvents(), this);
         console.sendMessage("");
         console.sendMessage(color("&2SeasonJobs &dv&5" + ver));
         console.sendMessage(color("&a------------------------ &2SeasonJob &a------------------------"));

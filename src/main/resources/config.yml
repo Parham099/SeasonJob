@@ -1,9 +1,21 @@
+# plugin languages in /lang folder
 lang: 'EN (US)'
-cooldown: 10 # per sec
+
+# invites cooldown time (if player doesnt have bypass permission)
+cooldown: 60 # per sec
+
 luck-perms: true
+# if this and luckperms are true and luckperms are loaded if you give a user a job rank player get him job!
+# (async task) time = luck-perms-sync-time
+luck-perms-async-users: true
+# per second
+luck-perms-sync-time: 10
+
+# use playerholderAPI plugin?
 placeholders: true
 
-auto-save: 10 # per sec
+# auto save timing per second
+auto-save: 3600 # per sec
 
 #
 # For example you can off generation default plugin jobs automatic
@@ -20,6 +32,7 @@ listmembers-player:
     - ''
     - '&6Playtime: &e%seasonjobs_playtime_p_hours%'
     - '&6Warn: &e%seasonjobs_warns%/%seasonjobs_warns_max%'
+    - '&6Point: &e%seasonjobs_point%&6/&e%seasonjobs_job_point%  &a&l%seasonjobs_cent_point%%'
   slots:
     - 10
     - 11

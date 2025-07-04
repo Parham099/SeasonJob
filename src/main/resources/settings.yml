@@ -1,0 +1,14 @@
+peace:
+  damage: false # the peace teams cant damage him peace jobs
+  deny-damage-message: '&eYou cant hit your peaces.'
+
+war:
+  # taked form the killed job and give to killer job
+  point: 1
+  lowest-point: 0
+  nerf-killed:
+    - 'eco take {player} 1000'
+  reward-killer:
+    - 'eco give {player} 1000'
+  # placeholders api placeholders set with killer info use {killed} first of placeholder to set it for killed player
+  message: '&8[&a&lSEASON&a&lGANG&8] &c%{killed}player_name% &7from &c%{killed}seasonjobs_name% &ekilled &7by &a&6%player_name% &efrom &a%seasonjobs_name%&e.'

@@ -1,61 +1,80 @@
 # Messages doesnt support buildout placeholders
 #Plugin prefix
-prefix: "&aSeasonJobs &2» "
+prefix: "&a&lSEASON&2&lJOBS &8&l» "
 
 deny-console: "&cYou cant excute this command from console."
 
-usage-invite: "&e/job invite <player> <job>"
+usage-invite: "&fUsage: &7/job invite [player] [job]"
 deny-permission-invite: "&cYou dont have permission to send a invite for this job."
-invalid-player-invite: "&4You cant invite a offline player!"
+invalid-player-invite: "&cYou cant invite a &coffline &cplayer!"
 cooldown-invite: "&cYou are at cooldown now please wait &4{cooldown} &cand test again."
 employed-invite: "&cPlayer has a job!"
-job-not-found-invite: "&cThis job is not found."
-sender-invite: "&aInvite success send to player for &7{job}"
-getter-invite: "&bYou have a invite from &7{job}"
+job-not-found-invite: "&cThis job does not found."
+sender-invite: "&7Invite &aSuccess &7send to player for &e{job}"
+getter-invite: "&7You have a invite from &e{job}"
 
 doesnt-have-invite-accept: "&cYou dont have any invite."
 employed-accept: "&cYou cant have two job."
-accepted-accept: "&aJob accepted."
+accepted-accept: "&7Job &aaccepted."
 
 doesnt-have-invite-deny: "&cYou dont have any invite."
 denied-deny: "&aJob invite denied."
 
-deny-permission-leave: "&cYou dont have permission to send a invite for this job."
+deny-permission-leave: "&cYou dont have permission to leave from your job."
+leave-leader: "&4You are leader! you cant leave from your job."
 unemployed-leave: "&cYou doesnt have any job."
-success-leave: "&aYou are leaved from your job."
+success-leave: "&7You are &cleaved &7from your job."
 
-usage-kick: "&e/job kick <player>"
+usage-kick: "&fUsage: &7/job kick [player]"
+self-kick: "&4&lYou cant kick yourself."
 unemployed-kick: "&cPlayer is unemployed."
 deny-permission-kick: "&cJust leaders can kick members."
 success-kick: "&2Player success kicked."
 
-usage-promote: "&e/job promote <player>"
+usage-promote: "&fUsage: &7/job promote [player]"
 unemployed-promote: "&cPlayer is unemployed."
-deny-permission-promote: "&4Only leaders can promote"
-doesnt-have-parent-promote: "&4Player job doesnt have parent to promote."
-success-promote: "&aPlayer success promoted"
-error-promote: "&4Player is on highest rank."
+deny-permission-promote: "&cOnly leaders can promote"
+doesnt-have-parent-promote: "&cPlayer job doesnt have parent to promote."
+success-promote: "&7Player &asuccess &7promoted"
+error-promote: "&cPlayer is on highest rank."
 
-usage-depromote: "&e/job depromote <player>"
+usage-depromote: "&fUsage: &7/job depromote [player]"
 unemployed-depromote: "&cPlayer is unemployed."
 deny-permission-depromote: "&4Only leaders can depromote"
 success-depromote: "&aPlayer success depromoted"
 error-depromote: "&4Player is on lowest rank."
 
-usage-warn: "&e/job warn [add/take/clear] <player>"
+usage-warn: "&fUsage: &7/job warn [add/take/clear] [player]"
 unemployed-warn: "&cPlayer is unemployed."
-deny-permission-warn: "&4Only leaders can manage warns."
-clear-warn: "&bPlayer warns success cleared &aNow: {warn}"
-add-warn: "&bPlayer warns success added &aNow: {warn}"
-take-warn: "&bPlayer warns success removed &aNow: {warn}"
+deny-permission-warn: "&cOnly leaders can manage warns."
+clear-warn: "&7Player warns &asuccess &7cleared &aNow: {warn}"
+add-warn: "&7Player warns &csuccess &7added &aNow: {warn}"
+take-warn: "&7Player warns &asuccess &7removed &aNow: {warn}"
 
-usage-listmembers: "&e/job listmembers &6<player>"
-deny-permissiong-listmembers: "&cYou dont have permission to see list members."
-job-not-found: "&cJob not founded."
-success-open-listmembers:
+usage-listmembers: "&fUsage: &7/job listmembers [job]"
+deny-permission-listmembers: "&cYou dont have permission to see list members."
+job-not-found: "&cJob not found."
+success-open-listmembers: "&eMenu opened."
 
 deny-permission-info: "&cYou dont have permission to see info."
-usage-info: "&e/job info <player>"
+usage-info: "&fUsage: &7/job info <player>"
+
+usage-war: "&fUsage: &7/job war <start/stop> <job1> <job2>"
+deny-permission-war: "&cYou dont have permission to start war."
+self-war: "&4You cant start a war with yourself."
+was-in-war: "&7You were in war with this job!"
+was-not-in-war: "&7You were not in war with this job!"
+1st-job-not-found-war: "&4First job was not found."
+2nd-job-not-found-war: "&4Second job was not found."
+peace-error-war: "&7You were peace with this job. You need break peace first."
+start-war: "&7War started with this job."
+stop-war: "&7War stopped with this job"
+
+usage-setleader: "&e/job setleader [username] [job]"
+player-notfound-setleader: "&cPlayer does not found."
+deny-permission-setleader: "&cYou dont have permission to this action."
+job-notfound-setleader: "&cThis job does not found."
+success-setleader: "&7Player &asuccess &7set as a leader."
 
 # use \n to get next line
 unemployed-info: "\n
@@ -68,8 +87,25 @@ unemployed-info: "\n
 employed-info: "\n
 &6&l&m=======================================\n
 &6&lName: &e%player_name% \n
-&6&lJob: %seasonjobs_prefix% &e(%seasonjobs_name%) \n
+&6&lJob: %seasonjobs_prefix% &e(Leader: %seasonjobs_leader%) \n
 &6&lWarn: &e%seasonjobs_warns%&6/&e%seasonjobs_warns_max% \n
+&6&lPoint: &e%seasonjobs_point%&6/&e%seasonjobs_job_point%  &a&l%seasonjobs_cent_point%% \n
 &6&lPlaytime: &e%seasonjobs_playtime_p_hours% \n
 &6&l&m=======================================
+"
+
+# use \n to get next line
+help-message: "\n
+&a&l--------------------------------- \n
+&7/job info [Player] &8- &f view player info. \n
+&7/job invite [Player] [Job] &8- &finvite a player. \n
+&7/job accept &8- &faccept a join request. \n
+&7/job deny &8- &freject a join request. \n
+&7/job leave &8- &f leave your current job. \n
+&7/job promote [Player] &8- &fpromot a player. \n
+&7/job depromote [Player] &8- &fdepromote a player. \n
+&7/job warn [add/take/clear] [Player] &8- &fsend warning to player. \n
+&7/job kick [Player] &8- &fremove a player from the job. \n
+&7/job listmembers [job] &8- &fview all job members. \n
+&a&l--------------------------------- \n
 "

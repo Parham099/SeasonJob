@@ -1,15 +1,13 @@
 package org.parham.seasonjob.data.member;
 
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.parham.seasonjob.data.job.Job;
 import org.parham.seasonjob.data.job.JobManager;
 import org.parham.seasonjob.SeasonJob;
-import org.parham.seasonjob.depend.Luckperms;
+import static org.parham.seasonjob.SeasonJob.luckperms;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,17 +21,16 @@ public class MemberManager {
     public static Member getMember(UUID uuid) {
         return members.get(uuid);
     }
+
     public static void delete(UUID id) {
         Member member = getMember(id);
-
-        if (Luckperms.isEnable) {
-            User user = LuckPermsProvider.get().getUserManager().getUser(id);
-
-            user.data().remove(Node.builder("group." + member.getJob()).build());
-            LuckPermsProvider.get().getUserManager().saveUser(user);
+        Job job = JobManager.getJob(member.getJob());
+        if (job.getLeader().getUUID() != null &&  job.getLeader().getUUID().equals(id)) {
+            job.removeLeader();
         }
+        luckperms.remove(id, "group." + member.getJob());
 
-        JobManager.getJob(members.get(id).getJob()).removeMember(id);
+        JobManager.getJob(member.getJob()).removeMember(id);
         members.remove(id);
         update(id, member);
     }
@@ -55,8 +52,6 @@ public class MemberManager {
             }
 
             members.remove(id);
-        } else {
-            // lp update
         }
     }
 
@@ -92,8 +87,10 @@ public class MemberManager {
         FileConfiguration config = YamlConfiguration.loadConfiguration(date);
         config.createSection("warn");
         config.createSection("playtime");
+        config.createSection("point");
         config.set("warn", member.getWarn());
         config.set("playtime", member.getPlaytime());
+        config.set("point", member.getPoint());
 
         config.save(date);
 
@@ -122,6 +119,7 @@ public class MemberManager {
                 member.setJob(member.getJob());
                 member.setWarn(config.getInt("warn"));
                 member.setPlaytime(config.getInt("playtime"));
+                member.setPoint(config.getInt("point"));
 
                 members.put(id, member);
             } catch (Exception e) {
@@ -136,16 +134,13 @@ public class MemberManager {
         member.setUUID(id);
         member.setWarn(0);
         member.setPlaytime(0);
+        member.setPoint(0);
 
         members.put(id, member);
         JobManager.getJob(job).addMember(id);
 
-        if (Luckperms.isEnable) {
-            User user = LuckPermsProvider.get().getUserManager().getUser(id);
 
-            user.data().add(Node.builder("group." + member.getJob()).build());
-            LuckPermsProvider.get().getUserManager().saveUser(user);
-        }
+        luckperms.add(id, "group." + member.getJob());
     }
 
     public static boolean contains(UUID id) {

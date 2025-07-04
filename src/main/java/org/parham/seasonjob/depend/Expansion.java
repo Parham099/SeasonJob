@@ -1,6 +1,7 @@
 package org.parham.seasonjob.depend;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +26,7 @@ public class Expansion extends PlaceholderExpansion {
     }
 
     public String getVersion() {
-        return "3.0.0";
+        return "3.0.1";
     }
 
     public String onRequest(OfflinePlayer player, String identifier) {
@@ -59,34 +60,24 @@ public class Expansion extends PlaceholderExpansion {
                         return String.valueOf(job.getMemberSize());
                     case "listmembers_size":
                         return String.valueOf(job.getMembers().size());
+                    case "point":
+                        return String.valueOf(member.getPoint());
+                    case "job_point":
+                        return String.valueOf(job.getPoint());
+                    case "cent_point":
+                        return String.format("%.2f" ,member.getPoint() / job.getPoint() * 100f);
+                    case "leader":
+                        if (job.getLeader().getUUID() != null) {
+                            return Bukkit.getOfflinePlayer(job.getLeader().getUUID()).getName();
+                        } else {
+                            return "No Leader";
+                        }
                     default:
                         return "Not Found";
                 }
             } catch (Exception e) {
-                switch (identifier) {
-                    case "name":
-                        return "";
-                    case "suffix":
-                        return "";
-                    case "prefix":
-                        return "";
-                    case "playtime_p_hours", "playtime_p_hour":
-                        return String.valueOf(0);
-                    case "playtime_p_min":
-                        return String.valueOf(0);
-                    case "playtime_p_sec":
-                        return String.valueOf(0);
-                    case "warns":
-                        return String.valueOf(0);
-                    case "warns_max":
-                        return "Infinity";
-                    case "listmembers_max":
-                        return "Infinity";
-                    case "listmembers_size":
-                        return "-1";
-                    default:
-                        return "Not Found";
-                }
+
+                return "";
             }
         }
     }

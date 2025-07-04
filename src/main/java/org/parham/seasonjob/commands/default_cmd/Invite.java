@@ -2,6 +2,7 @@ package org.parham.seasonjob.commands.default_cmd;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.parham.seasonjob.SeasonJob;
@@ -14,7 +15,9 @@ import org.parham.seasonjob.data.sender.Messages;
 import java.util.*;
 
 public class Invite implements SeasonCommand {
-    public static Map<UUID, String> invites = new HashMap<UUID, String>();
+    private static int now = 0;
+    private static final int EXPIRE_INVITE_TIME = 120;
+    public static Map<UUID, ArrayList<String>> invites = new HashMap<UUID, ArrayList<String>>();
     public static Map<UUID, Integer> cooldowns = new HashMap<>();
 
     @Override
@@ -34,7 +37,7 @@ public class Invite implements SeasonCommand {
 
     @Override
     public int getNeedArguments() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -43,11 +46,21 @@ public class Invite implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-        String job = args[1];
+        String job;
+        if (args.length >= 2) {
+            job = args[1];
+        } else if (sender instanceof Player && MemberManager.contains(((Player) sender).getUniqueId())) {
+            Player p = (Player) sender;
 
-        if (hasPermission() && !sender.hasPermission(getPermission() + "." + job)) {
+            job = MemberManager.getMember(p.getUniqueId()).getJob();
+        } else {
+            sender.sendMessage(getUsage());
+            return;
+        }
+
+        if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + job))) {
             sender.sendMessage(Messages.getMessage("deny-permission-invite"));
         } else if (target == null || !target.isOnline()) {
             sender.sendMessage(Messages.getMessage("invalid-player-invite"));
@@ -63,7 +76,12 @@ public class Invite implements SeasonCommand {
     }
 
     private void sendInvite(CommandSender sender, Player target, String job) {
-        invites.put(target.getUniqueId(), job);
+        ArrayList invitesList = new ArrayList();
+        if (invites.containsKey(target.getUniqueId())) {
+            invitesList.addAll(invites.get(target.getUniqueId()));
+        }
+        invitesList.add(job);
+        invites.put(target.getUniqueId(), invitesList);
 
         if (sender instanceof Player) {
             cooldowns.put(((Player) sender).getUniqueId(), SeasonJob.cooldown);
@@ -74,7 +92,7 @@ public class Invite implements SeasonCommand {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         if (args.length == 2) {
             return null;
         } else if (args.length == 3) {
@@ -91,6 +109,12 @@ public class Invite implements SeasonCommand {
                 if (cooldowns.get(uuid) <= 0) {
                     cooldowns.remove(uuid);
                 }
+            }
+            now++;
+
+            if (now >= EXPIRE_INVITE_TIME) {
+                invites.clear();
+                now = 0;
             }
         }, 1, 20);
     }

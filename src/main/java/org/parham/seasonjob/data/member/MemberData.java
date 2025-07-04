@@ -1,14 +1,13 @@
 package org.parham.seasonjob.data.member;
 
-import static org.parham.seasonjob.data.member.MemberManager.delete;
 import static org.parham.seasonjob.data.member.MemberManager.update;
 
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import org.parham.seasonjob.data.job.Job;
 import org.parham.seasonjob.data.job.JobManager;
-import org.parham.seasonjob.depend.Luckperms;
+import org.parham.seasonjob.data.job.Leader;
+import org.parham.seasonjob.data.job.LeaderData;
+
+import static org.parham.seasonjob.SeasonJob.luckperms;
 
 import java.util.UUID;
 
@@ -16,6 +15,7 @@ public class MemberData implements Member {
     UUID uuid;
     int warn;
     int playtime;
+    int point;
 
     @Override
     public UUID getUUID() {
@@ -30,33 +30,29 @@ public class MemberData implements Member {
     @Override
     public void setJob(String newJob) {
         Job job1 = JobManager.getJob(getJob());
+        if (job1.getLeader().getUUID() != null && job1.getLeader().getUUID().equals(uuid)) {
+            job1.removeLeader();
+        }
         job1.removeMember(uuid);
 
         Job job2 = JobManager.getJob(newJob);
         job2.addMember(uuid);
 
-        if (Luckperms.isEnable) {
-            User user = LuckPermsProvider.get().getUserManager().getUser(uuid);
+        luckperms.remove(uuid, "group." + job1.getName());
+        luckperms.add(uuid, "group." + job2.getName());
 
-            user.data().remove(Node.builder("group." + job1.getName()).build());
-            user.data().add(Node.builder("group." + job2.getName()).build());
-
-            LuckPermsProvider.get().getUserManager().saveUser(user);
-        }
-
+        setPoint(0);
         update(uuid, this);
     }
 
     @Override
     public void takeJob() {
         Job job = JobManager.getJob(getJob());
-
-        if (Luckperms.isEnable) {
-            User user = LuckPermsProvider.get().getUserManager().getUser(uuid);
-
-            user.data().remove(Node.builder("group." + job.getName()).build());
-            LuckPermsProvider.get().getUserManager().saveUser(user);
+        if (job.getLeader().getUUID() != null && job.getLeader().getUUID().equals(uuid)) {
+            job.removeLeader();
         }
+
+        luckperms.remove(uuid, "group." + job.getName());
 
         job.removeMember(uuid);
 
@@ -82,9 +78,12 @@ public class MemberData implements Member {
     public boolean promote() {
         Job job = JobManager.getJob(getJob());
 
-        setJob(job.getParent());
-
-        return false;
+        if (job.getParent() != null && JobManager.getJobsList().contains(job.getParent())) {
+            setJob(job.getParent());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -127,7 +126,37 @@ public class MemberData implements Member {
     }
 
     @Override
+    public int getPoint() {
+        return point;
+    }
+
+    @Override
+    public void addPoint(int point) {
+        this.point += point;
+        update(uuid, this);
+    }
+
+    @Override
+    public void takePoint(int point) {
+        this.point -= point;
+        update(uuid, this);
+    }
+
+    @Override
+    public void setPoint(int point) {
+        this.point = point;
+        update(uuid, this);
+    }
+
+    @Override
     public void delete() {
         MemberManager.delete(uuid);
+    }
+
+    @Override
+    public void setAsLeader() {
+        Job job = JobManager.getJob(getJob());
+
+        job.setLeader(uuid);
     }
 }

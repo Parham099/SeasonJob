@@ -38,12 +38,12 @@ public class DePromote implements SeasonCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, Command cmd, String label, String[] args) {
+    public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
         if (!MemberManager.contains(target.getUniqueId())) {
             sender.sendMessage(Messages.getMessage("unemployed-depromote"));
-        } else if (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob())) {
+        } else if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-depromote"));
         } else if (MemberManager.getMember(target.getUniqueId()).dePromote()) {
             sender.sendMessage(Messages.getMessage("success-depromote"));
@@ -53,7 +53,7 @@ public class DePromote implements SeasonCommand {
     }
 
     @Override
-    public List<String> getCompletions(String[] args) {
+    public List<String> getCompletions(CommandSender sender, String[] args) {
         return null;
     }
 }
