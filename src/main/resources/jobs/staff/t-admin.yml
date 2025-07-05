@@ -1,0 +1,28 @@
+leader:
+  enable: true
+  accesses:
+    warn: true
+    deny: false
+    listmembers: true
+    war: true
+    accept: false
+    depromote: true
+    invite: true
+    kick: true
+    info: true
+    setleader: false
+    leave: false
+    promote: true
+    peace: true
+prefix: '&9&lPolice'
+suffix: ''
+warn: 3
+point: 0
+parent: fbi
+playtime: 0
+member-size: 20
+members: []
+wars:
+- mafia
+peaces:
+- fbi

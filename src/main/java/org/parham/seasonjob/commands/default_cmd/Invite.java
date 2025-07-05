@@ -62,7 +62,7 @@ public class Invite implements SeasonCommand {
 
         if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + job))) {
             sender.sendMessage(Messages.getMessage("deny-permission-invite"));
-        } else if (target == null || !target.isOnline()) {
+        } else if (!target.hasPlayedBefore() || !target.isOnline()) {
             sender.sendMessage(Messages.getMessage("invalid-player-invite"));
         } else if ((sender instanceof Player) && !sender.hasPermission("seasonjob.invite.no-cooldown") && cooldowns.containsKey(((Player) sender).getUniqueId())) {
             sender.sendMessage(Messages.getMessage("cooldown-invite").replace("{cooldown}", cooldowns.get(((Player) sender).getUniqueId()).toString()));
@@ -75,7 +75,7 @@ public class Invite implements SeasonCommand {
         }
     }
 
-    private void sendInvite(CommandSender sender, Player target, String job) {
+    private void sendInvite(CommandSender sender, OfflinePlayer target, String job) {
         ArrayList invitesList = new ArrayList();
         if (invites.containsKey(target.getUniqueId())) {
             invitesList.addAll(invites.get(target.getUniqueId()));
@@ -88,7 +88,7 @@ public class Invite implements SeasonCommand {
         }
 
         sender.sendMessage(Messages.getMessage("sender-invite").replace("{job}", job));
-        target.sendMessage(Messages.getMessage("getter-invite").replace("{job}", job));
+        target.getPlayer().sendMessage(Messages.getMessage("getter-invite").replace("{job}", job));
     }
 
     @Override

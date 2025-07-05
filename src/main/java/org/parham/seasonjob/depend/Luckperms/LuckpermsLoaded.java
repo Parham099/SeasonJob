@@ -78,6 +78,8 @@ public class LuckpermsLoaded implements JobPermissionManager {
         LuckPermsProvider.get().getGroupManager().deleteGroup(LuckPermsProvider.get().getGroupManager().getGroup(groupName));
     }
     public void add(UUID player, String groupName) {
+        groupName = groupName.replace("group.", "");
+
         User user = LuckPermsProvider.get().getUserManager().getUser(player);
         Node perm = Node.builder("group." + groupName).build();
 
@@ -87,6 +89,8 @@ public class LuckpermsLoaded implements JobPermissionManager {
         }
     }
     public void remove(UUID player, String groupName) {
+        groupName = groupName.replace("group.", "");
+
         User user = LuckPermsProvider.get().getUserManager().getUser(player);
         Node perm = Node.builder("group." + groupName).build();
 

@@ -28,7 +28,7 @@ public class MemberManager {
         if (job.getLeader().getUUID() != null &&  job.getLeader().getUUID().equals(id)) {
             job.removeLeader();
         }
-        luckperms.remove(id, "group." + member.getJob());
+        luckperms.remove(id, member.getJob());
 
         JobManager.getJob(member.getJob()).removeMember(id);
         members.remove(id);
@@ -140,7 +140,7 @@ public class MemberManager {
         JobManager.getJob(job).addMember(id);
 
 
-        luckperms.add(id, "group." + member.getJob());
+        luckperms.add(id, member.getJob());
     }
 
     public static boolean contains(UUID id) {

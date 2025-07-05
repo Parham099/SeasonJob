@@ -1,6 +1,6 @@
 
 name: SeasonJob
-version: '1.0-SNAPSHOT'
+version: '3.0.1'
 main: org.parham.seasonjob.SeasonJob
 api-version: '1.18'
 
@@ -19,3 +19,4 @@ commands:
       - 'gangs'
       - 'clan'
       - 'clans'
+      - 'staffteam'

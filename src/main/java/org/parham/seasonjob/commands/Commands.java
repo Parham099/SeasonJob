@@ -37,23 +37,26 @@ public class Commands implements CommandExecutor, TabCompleter {
             } else {
 
                 // check player is leader or not
-                if (Arrays.stream(LeaderAccess.values()).anyMatch(var -> var.name().equals(args[0].toUpperCase()))) {
-                    if (sender instanceof Player && MemberManager.contains(((Player) sender).getUniqueId())) {
-                        Player p = (Player) sender;
-                        Member member = MemberManager.getMember(p.getUniqueId());
-                        Job job = JobManager.getJob(member.getJob());
+                try {
+                    if (Arrays.stream(LeaderAccess.values()).anyMatch(var -> var.name().equals(args[0].toUpperCase()))) {
+                        if (sender instanceof Player && MemberManager.contains(((Player) sender).getUniqueId())) {
+                            Player p = (Player) sender;
+                            Member member = MemberManager.getMember(p.getUniqueId());
+                            Job job = JobManager.getJob(member.getJob());
 
-                        if (job.getLeader().getUUID().equals(p.getUniqueId())) {
-                            Leader leader = job.getLeader();
-                            if (leader.isEnable()) {
-                                boolean hasAccess = leader.hasAccess(LeaderAccess.valueOf(args[0].toUpperCase()));
+                            if (job.getLeader().getUUID().equals(p.getUniqueId())) {
+                                Leader leader = job.getLeader();
+                                if (leader.isEnable()) {
+                                    boolean hasAccess = leader.hasAccess(LeaderAccess.valueOf(args[0].toUpperCase()));
 
-                                seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]), true, hasAccess);
-                                return true;
+                                    seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]), true, hasAccess);
+                                    return true;
+                                }
                             }
                         }
                     }
-                }
+                } catch (NullPointerException e) {}
+
 
                 seasonCommand.execute(sender, command, s, editedArgs.toArray(new String[editedArgs.size()]), false, true);
             }

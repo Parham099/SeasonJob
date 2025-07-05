@@ -24,7 +24,7 @@ public class LeaderData implements Leader {
 
     @Override
     public boolean hasAccess(LeaderAccess access) {
-        if (accesses.containsKey(access)) {
+        if (accesses.containsKey(access) && isEnable) {
             return this.accesses.get(access);
         }
 
