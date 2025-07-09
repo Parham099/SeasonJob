@@ -56,6 +56,7 @@ public final class SeasonJob extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        MemberManager.updateMembersDataFiles();
         JobManager.saveAll();
         MemberManager.saveAll();
     }

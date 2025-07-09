@@ -60,7 +60,7 @@ public class Invite implements SeasonCommand {
             return;
         }
 
-        if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + job))) {
+        if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + job))) {
             sender.sendMessage(Messages.getMessage("deny-permission-invite"));
         } else if (!target.hasPlayedBefore() || !target.isOnline()) {
             sender.sendMessage(Messages.getMessage("invalid-player-invite"));

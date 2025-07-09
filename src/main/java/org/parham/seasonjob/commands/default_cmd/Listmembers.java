@@ -56,7 +56,7 @@ public class Listmembers implements SeasonCommand, Listener {
     public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         Player player = (Player) sender;
 
-        if ((isLeader && !hasAccess) && (hasPermission() && !player.hasPermission(getPermission()))) {
+        if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !player.hasPermission(getPermission()))) {
             player.sendMessage(Messages.getMessage("deny-permissiong-listmembers"));
         } else if (args.length == 0 && !MemberManager.contains(player.getUniqueId())) {
             player.sendMessage(getUsage());

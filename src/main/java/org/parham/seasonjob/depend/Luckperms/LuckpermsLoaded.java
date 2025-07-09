@@ -2,7 +2,9 @@ package org.parham.seasonjob.depend.Luckperms;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.InheritanceNode;
@@ -13,6 +15,7 @@ import org.parham.seasonjob.data.job.Job;
 import org.parham.seasonjob.data.job.JobManager;
 import org.parham.seasonjob.data.member.MemberManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -32,22 +35,13 @@ public class LuckpermsLoaded implements JobPermissionManager {
                 if (!luckPerms.getGroupManager().isLoaded(jobName)) {
                     luckPerms.getGroupManager().createAndLoadGroup(jobName);
                 }
-                for (UUID id : job.getMembers()) {
-                    Node jobRank = Node.builder("group." + jobName).build();
-                    User user = luckPerms.getUserManager().getUser(id);
 
-                    if (luckPerms.getUserManager().isLoaded(id)) {
-                        user.data().add(jobRank);
-                        LuckPermsProvider.get().getUserManager().saveUser(user);
-                    }
-                }
-
-                updateJobs(luckPerms, jobName);
+                updateJobs(luckPerms, jobName, job);
             }
         }, 1, 20 * SYNC_INIT_TIME_SEC);
     }
 
-    private void updateJobs(LuckPerms luckPerms, String jobName) {
+    private void updateJobs(LuckPerms luckPerms, String jobName, Job job) {
         if (UPDATE_JOBS_WITH_LUCK_PERMS) {
             Collection<User> loadedUsers = luckPerms.getUserManager().getLoadedUsers();
             List<User> usersInGroup = loadedUsers.stream()
@@ -57,14 +51,22 @@ public class LuckpermsLoaded implements JobPermissionManager {
                     })
                     .collect(Collectors.toList());
 
+            List<UUID> updated = new ArrayList<>();
             for (User user : usersInGroup) {
                 UUID uuid = user.getUniqueId();
 
+                updated.add(uuid);
                 if (!MemberManager.contains(uuid)) {
                     MemberManager.add(uuid, jobName);
                 }
                 if (!MemberManager.getMember(uuid).getJob().equals(jobName)) {
                     MemberManager.getMember(uuid).setJob(jobName);
+                }
+            }
+
+            for (UUID uuid : job.getMembers()) {
+                if (!updated.contains(uuid) && luckPerms.getUserManager().isLoaded(uuid)) {
+                    MemberManager.getMember(uuid).takeJob();
                 }
             }
         }
@@ -80,6 +82,10 @@ public class LuckpermsLoaded implements JobPermissionManager {
     public void add(UUID player, String groupName) {
         groupName = groupName.replace("group.", "");
 
+        if (!LuckPermsProvider.get().getUserManager().isLoaded(player)) {
+            LuckPermsProvider.get().getUserManager().loadUser(player);
+        }
+
         User user = LuckPermsProvider.get().getUserManager().getUser(player);
         Node perm = Node.builder("group." + groupName).build();
 
@@ -90,6 +96,10 @@ public class LuckpermsLoaded implements JobPermissionManager {
     }
     public void remove(UUID player, String groupName) {
         groupName = groupName.replace("group.", "");
+
+        if (!LuckPermsProvider.get().getUserManager().isLoaded(player)) {
+            LuckPermsProvider.get().getUserManager().loadUser(player);
+        }
 
         User user = LuckPermsProvider.get().getUserManager().getUser(player);
         Node perm = Node.builder("group." + groupName).build();

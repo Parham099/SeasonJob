@@ -73,9 +73,8 @@ public class JobManager {
 
         data.createSection("leader");
         data.createSection("leader.enable");
-        if (job.getLeader().getUUID() != null) {
-            data.createSection("leader.uuid");
-        }
+        data.createSection("leader.uuid");
+
         data.createSection("leader.accesses");
         data.createSection("prefix");
         data.createSection("suffix");
@@ -93,9 +92,14 @@ public class JobManager {
     public static FileConfiguration configUpdate(FileConfiguration data, Job job) {
 
         data.set("leader.enable", job.getLeader().isEnable());
-
-        if (job.getLeader().getUUID() != null) {
-            data.set("leader.uuid", job.getLeader().getUUID().toString());
+        try {
+            if (data.contains("leader.uuid")) {
+                data.set("leader.uuid", job.getLeader().getUUID().toString());
+            } else {
+                data.set("leader.uuid", null);
+            }
+        } catch (NullPointerException ignored) {
+            data.set("leader.uuid", null);
         }
 
         List<LeaderAccess> leaderAccesses = job.getLeader().getAccesses().keySet().stream().toList();
@@ -184,8 +188,6 @@ public class JobManager {
 
         if (leaderSection.contains("uuid")) {
             leader.setUUID(UUID.fromString(leaderSection.getString("uuid")));
-        } else {
-            leaderSection.set("uuid", null);
         }
 
         ConfigurationSection accessesSection = leaderSection.getConfigurationSection("accesses");

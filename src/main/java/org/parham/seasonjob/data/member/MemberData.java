@@ -38,8 +38,8 @@ public class MemberData implements Member {
         Job job2 = JobManager.getJob(newJob);
         job2.addMember(uuid);
 
-        luckperms.remove(uuid, "group." + job1.getName());
-        luckperms.add(uuid, "group." + job2.getName());
+        luckperms.remove(uuid, job1.getName());
+        luckperms.add(uuid, job2.getName());
 
         setPoint(0);
         update(uuid, this);

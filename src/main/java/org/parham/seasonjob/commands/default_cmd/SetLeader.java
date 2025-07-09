@@ -45,7 +45,7 @@ public class SetLeader implements SeasonCommand {
             sender.sendMessage(getUsage());
         } else if (!JobManager.getJobsList().contains(args[1])) {
             sender.sendMessage(Messages.getMessage("job-notfound-setleader"));
-        } else if (hasPermission() && (!sender.hasPermission(getPermission() + "." + args[1]) && !sender.hasPermission(getPermission() + ".*"))) {
+        } else if (!sender.hasPermission(getPermission() + "." + args[1]) && !sender.hasPermission(getPermission() + ".*")) {
             sender.sendMessage(Messages.getMessage("deny-permission-setleader"));
         } else if (!Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore()) {
             sender.sendMessage(Messages.getMessage("player-notfound-setleader"));

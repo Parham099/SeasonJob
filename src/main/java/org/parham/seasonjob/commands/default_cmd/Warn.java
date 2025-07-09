@@ -46,7 +46,7 @@ public class Warn implements SeasonCommand {
             sender.sendMessage(Messages.getMessage("unemployed-warn"));
         } else if ((
                 isLeader && !hasAccess)
-                && (hasPermission()
+                || (!isLeader && hasPermission()
                 && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(player.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-warn"));
         } else {

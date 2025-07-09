@@ -45,7 +45,7 @@ public class Promote implements SeasonCommand {
 
         if (!MemberManager.contains(target.getUniqueId())) {
             sender.sendMessage(Messages.getMessage("unemployed-promote"));
-        } else if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
+        } else if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-promote"));
         } else if (!JobManager.getJobsList().contains(JobManager.getJob(MemberManager.getMember(target.getUniqueId()).getJob()).getParent())) {
             sender.sendMessage(Messages.getMessage("doesnt-have-parent-promote"));

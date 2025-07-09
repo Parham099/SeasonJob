@@ -43,7 +43,7 @@ public class DePromote implements SeasonCommand {
 
         if (!MemberManager.contains(target.getUniqueId())) {
             sender.sendMessage(Messages.getMessage("unemployed-depromote"));
-        } else if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
+        } else if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-depromote"));
         } else if (MemberManager.getMember(target.getUniqueId()).dePromote()) {
             sender.sendMessage(Messages.getMessage("success-depromote"));

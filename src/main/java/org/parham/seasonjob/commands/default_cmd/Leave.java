@@ -41,7 +41,7 @@ public class Leave implements SeasonCommand {
     public void execute(CommandSender sender, Command cmd, String label, String[] args, boolean isLeader, boolean hasAccess) {
         Player player = (Player) sender;
 
-        if ((isLeader && !hasAccess) && (hasPermission() && !player.hasPermission(getPermission()))) {
+        if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !player.hasPermission(getPermission()))) {
             player.sendMessage(Messages.getMessage("deny-permission-leave"));
         } else if (!MemberManager.contains(player.getUniqueId())) {
             player.sendMessage(Messages.getMessage("unemployed-leave"));

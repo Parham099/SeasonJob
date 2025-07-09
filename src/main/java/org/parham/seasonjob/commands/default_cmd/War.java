@@ -48,7 +48,7 @@ public class War implements SeasonCommand {
             sender.sendMessage(Messages.getMessage("1st-job-not-found-war"));
         } else if (job2 == null) {
             sender.sendMessage(Messages.getMessage("2nd-job-not-found-war"));
-        } else if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + action + "." + job1.getName().toLowerCase()))) {
+        } else if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + action + "." + job1.getName().toLowerCase()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-war"));
         } else if (job1.getName().equals(job2.getName())) {
             sender.sendMessage(Messages.getMessage("self-war"));

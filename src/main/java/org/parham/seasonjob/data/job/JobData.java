@@ -7,9 +7,9 @@ import java.util.*;
 public class JobData implements Job {
     String jobName = null;
     Leader leader = null;
-    List<UUID> users = new ArrayList<>();
-    List<String> wars = new ArrayList<>();
-    List<String> peaces = new ArrayList<>();
+    HashSet<UUID> users = new HashSet<>();
+    HashSet<String> wars = new HashSet<>();
+    HashSet<String> peaces = new HashSet<>();
     String parent = "";
     String prefix = "";
     String suffix = "";
@@ -72,7 +72,7 @@ public class JobData implements Job {
 
     @Override
     public List<UUID> getMembers() {
-        return users;
+        return users.stream().toList();
     }
 
     @Override
@@ -172,7 +172,7 @@ public class JobData implements Job {
 
     @Override
     public List<String> getPeaces() {
-        return peaces;
+        return peaces.stream().toList();
     }
 
     @Override
@@ -213,7 +213,7 @@ public class JobData implements Job {
 
     @Override
     public List<String> getWars() {
-        return wars;
+        return wars.stream().toList();
     }
 
     @Override

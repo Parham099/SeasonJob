@@ -47,7 +47,7 @@ public class Kick implements SeasonCommand {
 
         if (!MemberManager.contains(target.getUniqueId())) {
             sender.sendMessage(Messages.getMessage("unemployed-kick"));
-        } else if ((isLeader && !hasAccess) && (hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
+        } else if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + MemberManager.getMember(target.getUniqueId()).getJob()))) {
             sender.sendMessage(Messages.getMessage("deny-permission-kick"));
         } else {
             if (sender instanceof Player && ((Player) sender).getUniqueId().equals(target.getUniqueId())) {
