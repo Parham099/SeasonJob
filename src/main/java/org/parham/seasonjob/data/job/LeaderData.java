@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class LeaderData implements Leader {
-    UUID uuid = null;
+    UUID uuid;
     Boolean isEnable = false;
     Map<LeaderAccess, Boolean> accesses = new HashMap<LeaderAccess, Boolean>();
 

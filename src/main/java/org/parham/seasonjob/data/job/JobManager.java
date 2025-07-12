@@ -71,45 +71,27 @@ public class JobManager {
         FileConfiguration data = new YamlConfiguration();
         data.load(dataFiles);
 
-        data.createSection("leader");
-        data.createSection("leader.enable");
-        data.createSection("leader.uuid");
-
-        data.createSection("leader.accesses");
-        data.createSection("prefix");
-        data.createSection("suffix");
-        data.createSection("warn");
-        data.createSection("point");
-        data.createSection("parent");
-        data.createSection("playtime");
-        data.createSection("member-size");
-        data.createSection("members");
-        data.createSection("wars");
-        data.createSection("peaces");
         configUpdate(data, job).save(dataFiles);
     }
 
     public static FileConfiguration configUpdate(FileConfiguration data, Job job) {
+        data.createSection("leader");
+        ConfigurationSection leaderSection = data.getConfigurationSection("leader");
+        leaderSection.set("enable", job.getLeader().isEnable());
 
-        data.set("leader.enable", job.getLeader().isEnable());
-        try {
-            if (data.contains("leader.uuid")) {
-                data.set("leader.uuid", job.getLeader().getUUID().toString());
-            } else {
-                data.set("leader.uuid", null);
-            }
-        } catch (NullPointerException ignored) {
-            data.set("leader.uuid", null);
+        if (job.getLeader().getUUID() != null) {
+            leaderSection.set("uuid", job.getLeader().getUUID().toString());
         }
 
         List<LeaderAccess> leaderAccesses = job.getLeader().getAccesses().keySet().stream().toList();
-        String leaderAccessesSection = "leader.accesses.";
+
+        leaderSection.createSection("accesses");
+        ConfigurationSection leaderAccessesSection = leaderSection.getConfigurationSection("accesses");
 
         for (LeaderAccess key : leaderAccesses) {
             String accessName = key.name().toLowerCase();
 
-            data.createSection(leaderAccessesSection + accessName);
-            data.set(leaderAccessesSection + accessName, job.getLeader().hasAccess(key));
+            leaderAccessesSection.set(accessName, job.getLeader().hasAccess(key));
         }
 
         data.set("prefix", job.getPrefix());
@@ -180,7 +162,7 @@ public class JobManager {
         loadLists(job, data);
     }
 
-    private static void loadLeader(Job job, ConfigurationSection data) {
+    private static void loadLeader(Job job, Configuration data) {
         Leader leader = new LeaderData();
         ConfigurationSection leaderSection = data.getConfigurationSection("leader");
 

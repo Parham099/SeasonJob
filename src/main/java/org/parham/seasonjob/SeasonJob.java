@@ -28,7 +28,6 @@ public final class SeasonJob extends JavaPlugin {
     public static JobPermissionManager luckperms;
     private static volatile Plugin instance;
     public static int cooldown; // invite cooldown
-    private static final String ver = "3.0.1";
 
     @Override
     public void onEnable() {
@@ -162,7 +161,7 @@ public final class SeasonJob extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PeaceEvents(), this);
         Bukkit.getPluginManager().registerEvents(new WarEvents(), this);
         console.sendMessage("");
-        console.sendMessage(color("&2SeasonJobs &dv&5" + ver));
+        console.sendMessage(color("&2SeasonJobs &dv&5" + getDescription().getVersion() + "&a-&2R"));
         console.sendMessage(color("&a------------------------ &2SeasonJob &a------------------------"));
     }
 

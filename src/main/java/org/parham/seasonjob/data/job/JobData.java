@@ -5,8 +5,8 @@ import static org.parham.seasonjob.data.job.JobManager.update;
 import java.util.*;
 
 public class JobData implements Job {
-    String jobName = null;
-    Leader leader = null;
+    String jobName;
+    Leader leader;
     HashSet<UUID> users = new HashSet<>();
     HashSet<String> wars = new HashSet<>();
     HashSet<String> peaces = new HashSet<>();
@@ -19,11 +19,12 @@ public class JobData implements Job {
     int memberSize = 0;
 
     public JobData() {
-        Leader leader = new LeaderData();
+        this.leader = new LeaderData();
+
         for (LeaderAccess access : LeaderAccess.values()) {
             leader.setAccess(access, false);
         }
-        leader.setEnable(true);
+        leader.setEnable(false);
     }
 
     @Override
@@ -254,18 +255,20 @@ public class JobData implements Job {
     @Override
     public void setLeader(UUID uuid) {
         leader.setUUID(uuid);
-
+        this.setLeader(leader);
         update(this);
     }
 
     @Override
     public void setLeader(Leader leaderObject) {
         leader = leaderObject;
+        update(this);
     }
 
     @Override
     public void removeLeader() {
         leader.setUUID(null);
+        update(this);
     }
 
     @Override
@@ -276,5 +279,7 @@ public class JobData implements Job {
     @Override
     public void setLeaderPerm(LeaderAccess node, boolean isEnabled) {
         leader.setAccess(node, isEnabled);
+
+        update(this);
     }
 }

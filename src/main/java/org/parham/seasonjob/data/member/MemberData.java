@@ -30,7 +30,7 @@ public class MemberData implements Member {
     @Override
     public void setJob(String newJob) {
         Job job1 = JobManager.getJob(getJob());
-        if (job1.getLeader().getUUID() != null && job1.getLeader().getUUID().equals(uuid)) {
+        if (job1.getLeader().getUUID() != null && job1.getLeader().getUUID().equals(uuid) && !job1.getName().equals(newJob)) {
             job1.removeLeader();
         }
         job1.removeMember(uuid);

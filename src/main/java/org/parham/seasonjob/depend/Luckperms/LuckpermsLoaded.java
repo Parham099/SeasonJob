@@ -81,32 +81,30 @@ public class LuckpermsLoaded implements JobPermissionManager {
     }
     public void add(UUID player, String groupName) {
         groupName = groupName.replace("group.", "");
+        LuckPerms luckperms = LuckPermsProvider.get();
 
-        if (!LuckPermsProvider.get().getUserManager().isLoaded(player)) {
-            LuckPermsProvider.get().getUserManager().loadUser(player);
-        }
+        String finalGroupName = groupName;
+        luckperms.getUserManager().loadUser(player).thenAccept(user -> {
+            Node perm = Node.builder("group." + finalGroupName).build();
 
-        User user = LuckPermsProvider.get().getUserManager().getUser(player);
-        Node perm = Node.builder("group." + groupName).build();
-
-        if (!user.data().contains(perm , NodeEqualityPredicate.ONLY_KEY).asBoolean()) {
-            user.data().add(perm);
-            LuckPermsProvider.get().getUserManager().saveUser(user);
-        }
+            if (!user.data().contains(perm , NodeEqualityPredicate.ONLY_KEY).asBoolean()) {
+                user.data().add(perm);
+                luckperms.getUserManager().saveUser(user);
+            }
+        });
     }
     public void remove(UUID player, String groupName) {
         groupName = groupName.replace("group.", "");
+        LuckPerms luckperms = LuckPermsProvider.get();
 
-        if (!LuckPermsProvider.get().getUserManager().isLoaded(player)) {
-            LuckPermsProvider.get().getUserManager().loadUser(player);
-        }
+        String finalGroupName = groupName;
+        luckperms.getUserManager().loadUser(player).thenAccept(user -> {
+            Node perm = Node.builder("group." + finalGroupName).build();
 
-        User user = LuckPermsProvider.get().getUserManager().getUser(player);
-        Node perm = Node.builder("group." + groupName).build();
-
-        if (user.data().contains(perm , NodeEqualityPredicate.ONLY_KEY).asBoolean()) {
-            user.data().remove(perm);
-            LuckPermsProvider.get().getUserManager().saveUser(user);
-        }
+            if (user.data().contains(perm , NodeEqualityPredicate.ONLY_KEY).asBoolean()) {
+                user.data().remove(perm);
+                luckperms.getUserManager().saveUser(user);
+            }
+        });
     }
 }
