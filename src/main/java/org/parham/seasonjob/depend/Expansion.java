@@ -45,9 +45,10 @@ public class Expansion extends PlaceholderExpansion {
                         return c(job.getSuffix());
                     case "prefix":
                         return c(job.getPrefix());
-                    case "playtime_p_hours", "playtime_p_hour":
-                        Float f = member.getPlaytime() / 60.0f / 60.0f;
-                        return String.format("%.2f", f);
+                    case "playtime_p_hours":
+                    case "playtime_p_hour":
+                        Float hours = member.getPlaytime() / 60.0f / 60.0f;
+                        return String.format("%.2f", hours);
                     case "playtime_p_min":
                         return String.valueOf(member.getPlaytime() / 60f);
                     case "playtime_p_sec":
@@ -65,7 +66,7 @@ public class Expansion extends PlaceholderExpansion {
                     case "job_point":
                         return String.valueOf(job.getPoint());
                     case "cent_point":
-                        return String.format("%.2f" ,member.getPoint() / job.getPoint() * 100f);
+                        return String.format("%.2f" ,(member.getPoint() / job.getPoint()) * 100f);
                     case "leader":
                         if (job.getLeader().getUUID() != null) {
                             return Bukkit.getOfflinePlayer(job.getLeader().getUUID()).getName();

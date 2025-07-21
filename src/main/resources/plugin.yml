@@ -1,8 +1,7 @@
 
 name: SeasonJob
-version: '3.0.2'
+version: '3.0.3'
 main: org.parham.seasonjob.SeasonJob
-api-version: '1.18'
 
 softdepend:
   - Luckperms

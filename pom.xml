@@ -6,13 +6,13 @@
 
     <groupId>org.parham</groupId>
     <artifactId>seasonjob</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
     <packaging>jar</packaging>
 
     <name>seasonjob</name>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -24,8 +24,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>8</source>
+                    <target>8</target>
+                    <release>8</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -69,15 +70,9 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.spigotmc</groupId>-->
-<!--            <artifactId>spigot-api</artifactId>-->
-<!--            <version>1.12.2-R0.1-SNAPSHOT</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>

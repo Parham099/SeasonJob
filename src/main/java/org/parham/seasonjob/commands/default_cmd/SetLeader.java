@@ -11,7 +11,10 @@ import org.parham.seasonjob.data.member.Member;
 import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SetLeader implements SeasonCommand {
     @Override
@@ -70,9 +73,9 @@ public class SetLeader implements SeasonCommand {
         if (args.length == 2) {
             return null;
         } else if (args.length == 3) {
-            return JobManager.getJobsList().stream().toList();
+            return JobManager.getJobsList().stream().collect(Collectors.toList());
         } else {
-            return List.of("");
+            return Arrays.asList("");
         }
     }
 }

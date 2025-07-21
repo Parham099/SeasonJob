@@ -14,6 +14,7 @@ import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Commands implements CommandExecutor, TabCompleter {
     private static Map<String, SeasonCommand> commands = new HashMap<String, SeasonCommand>();
@@ -30,7 +31,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 return true;
             }
             List<String> editedArgs = new ArrayList<String>();
-            editedArgs.addAll(Arrays.stream(args).toList());
+            editedArgs.addAll(Arrays.stream(args).collect(Collectors.toList()));
             editedArgs.remove(0);
             if (editedArgs.size() < seasonCommand.getNeedArguments()) {
                 sender.sendMessage(seasonCommand.getUsage());
@@ -75,7 +76,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
         if (args.length <= 1) {
-            return Commands.commands.keySet().stream().toList();
+            return Commands.commands.keySet().stream().collect(Collectors.toList());
         } else {
             if (commands.containsKey(args[0])) {
                 return commands.get(args[0]).getCompletions(commandSender, args);

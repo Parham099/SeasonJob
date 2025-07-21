@@ -1,7 +1,5 @@
 package org.parham.seasonjob.data.job;
 
-import org.bukkit.OfflinePlayer;
-
 import java.util.List;
 import java.util.UUID;
 

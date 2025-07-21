@@ -21,6 +21,7 @@ import org.parham.seasonjob.data.sender.Messages;
 import org.parham.seasonjob.gui.Listmember;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Listmembers implements SeasonCommand, Listener {
     public static int listmembersSize;
@@ -76,7 +77,7 @@ public class Listmembers implements SeasonCommand, Listener {
 
     @Override
     public List<String> getCompletions(CommandSender sender, String[] args) {
-        return JobManager.getJobsList().stream().toList();
+        return JobManager.getJobsList().stream().collect(Collectors.toList());
     }
 
     private void openInv(Player player, String jobName, int page) {

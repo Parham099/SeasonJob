@@ -3,6 +3,7 @@ package org.parham.seasonjob.data.job;
 import static org.parham.seasonjob.data.job.JobManager.update;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JobData implements Job {
     String jobName;
@@ -73,7 +74,7 @@ public class JobData implements Job {
 
     @Override
     public List<UUID> getMembers() {
-        return users.stream().toList();
+        return users.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -173,7 +174,7 @@ public class JobData implements Job {
 
     @Override
     public List<String> getPeaces() {
-        return peaces.stream().toList();
+        return peaces.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -214,7 +215,7 @@ public class JobData implements Job {
 
     @Override
     public List<String> getWars() {
-        return wars.stream().toList();
+        return wars.stream().collect(Collectors.toList());
     }
 
     @Override

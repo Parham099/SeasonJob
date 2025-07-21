@@ -161,7 +161,7 @@ public final class SeasonJob extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PeaceEvents(), this);
         Bukkit.getPluginManager().registerEvents(new WarEvents(), this);
         console.sendMessage("");
-        console.sendMessage(color("&2SeasonJobs &dv&5" + getDescription().getVersion() + "&a-&2R"));
+        console.sendMessage(color("&2SeasonJobs &dv&5" + getDescription().getVersion() + "&a-&cR"));
         console.sendMessage(color("&a------------------------ &2SeasonJob &a------------------------"));
     }
 

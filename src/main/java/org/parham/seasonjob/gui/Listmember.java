@@ -8,10 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.parham.seasonjob.SeasonJob;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Listmember {
     private static Configuration config = SeasonJob.getInstance().getConfig();
@@ -36,7 +33,13 @@ public class Listmember {
             ConfigurationSection item = items_config.getConfigurationSection(key);
 
             String name = cc(item.getString("name"));
-            Material type = Material.getMaterial(item.getString("type"));
+            Material type;
+            try {
+                String typeName = item.getString("type");
+                type = Material.valueOf(typeName);
+            } catch (IllegalArgumentException  e) {
+                type = Material.STONE;
+            }
             List<Integer> slots = item.getIntegerList("slot");
             List<String> lores = item.getStringList("lore");
 
@@ -57,7 +60,14 @@ public class Listmember {
     private static void loadPlayerItem() {
         ConfigurationSection player_config = config.getConfigurationSection("listmembers-player");
 
-        player = new ItemStack(Material.getMaterial(player_config.getString("type")));
+        Material type;
+        try {
+            String typeName = player_config.getString("type");
+            type = Material.valueOf(typeName);
+        } catch (IllegalArgumentException  e) {
+            type = Material.STONE;
+        }
+        player = new ItemStack(type);
 
         ItemMeta meta = player.getItemMeta();
         meta.setDisplayName(cc(player_config.getString("name")));

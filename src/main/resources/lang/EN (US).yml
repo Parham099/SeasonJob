@@ -69,6 +69,7 @@ was-not-in-war: "&7You were not in war with this job!"
 peace-error-war: "&7You were peace with this job. You need break peace first."
 start-war: "&7War started with this job."
 stop-war: "&7War stopped with this job"
+war-list: "&aThis job at war with: {wars}"
 
 usage-setleader: "&e/job setleader [username] [job]"
 player-notfound-setleader: "&cPlayer does not found."

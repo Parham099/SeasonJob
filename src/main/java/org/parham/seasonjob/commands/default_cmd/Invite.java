@@ -13,6 +13,7 @@ import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Invite implements SeasonCommand {
     private static int now = 0;
@@ -62,7 +63,7 @@ public class Invite implements SeasonCommand {
 
         if ((isLeader && !hasAccess) || (!isLeader && hasPermission() && !sender.hasPermission(getPermission() + "." + job))) {
             sender.sendMessage(Messages.getMessage("deny-permission-invite"));
-        } else if (!target.hasPlayedBefore() || !target.isOnline()) {
+        } else if (!target.isOnline()) {
             sender.sendMessage(Messages.getMessage("invalid-player-invite"));
         } else if ((sender instanceof Player) && !sender.hasPermission("seasonjob.invite.no-cooldown") && cooldowns.containsKey(((Player) sender).getUniqueId())) {
             sender.sendMessage(Messages.getMessage("cooldown-invite").replace("{cooldown}", cooldowns.get(((Player) sender).getUniqueId()).toString()));
@@ -96,7 +97,7 @@ public class Invite implements SeasonCommand {
         if (args.length == 2) {
             return null;
         } else if (args.length == 3) {
-            return JobManager.getJobsList().stream().toList();
+            return JobManager.getJobsList().stream().collect(Collectors.toList());
         } else {
             return null;
         }

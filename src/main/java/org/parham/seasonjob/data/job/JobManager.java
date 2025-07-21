@@ -14,6 +14,7 @@ import static org.parham.seasonjob.SeasonJob.getInstance;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JobManager {
     public static Map<String, Job> jobs = new HashMap<>();
@@ -83,7 +84,7 @@ public class JobManager {
             leaderSection.set("uuid", job.getLeader().getUUID().toString());
         }
 
-        List<LeaderAccess> leaderAccesses = job.getLeader().getAccesses().keySet().stream().toList();
+        List<LeaderAccess> leaderAccesses = job.getLeader().getAccesses().keySet().stream().collect(Collectors.toList());
 
         leaderSection.createSection("accesses");
         ConfigurationSection leaderAccessesSection = leaderSection.getConfigurationSection("accesses");

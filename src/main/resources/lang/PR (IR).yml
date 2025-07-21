@@ -1,0 +1,111 @@
+# پیام‌ها از Buildout placeholders پشتیبانی نمی‌کنند
+# پیشوند افزونه
+prefix: "&a&lفصل&2&lشغل‌ها &8&l» "
+
+deny-console: "&cشما نمی‌توانید این دستور را از کنسول اجرا کنید."
+
+usage-invite: "&fنحوه استفاده: &7/job invite [بازیکن] [شغل]"
+deny-permission-invite: "&cشما اجازه دعوت به این شغل را ندارید."
+invalid-player-invite: "&cشما نمی‌توانید بازیکن &cآفلاین &cرا دعوت کنید!"
+cooldown-invite: "&cاکنون در زمان انتظار هستید. لطفاً &4{cooldown} &cثانیه صبر کنید و دوباره تلاش کنید."
+employed-invite: "&cبازیکن قبلاً شغلی دارد!"
+job-not-found-invite: "&cاین شغل یافت نشد."
+sender-invite: "&7دعوت با &aموفقیت &7برای شغل &e{job} ارسال شد."
+getter-invite: "&7شما یک دعوت‌نامه برای شغل &e{job} دارید."
+
+doesnt-have-invite-accept: "&cشما هیچ دعوت‌نامه‌ای ندارید."
+employed-accept: "&cشما نمی‌توانید دو شغل داشته باشید."
+accepted-accept: "&7شغل با موفقیت &aپذیرفته شد."
+
+doesnt-have-invite-deny: "&cشما هیچ دعوت‌نامه‌ای ندارید."
+denied-deny: "&aدعوت‌نامه رد شد."
+
+deny-permission-leave: "&cشما اجازه ترک شغل خود را ندارید."
+leave-leader: "&4شما رهبر هستید! نمی‌توانید شغل را ترک کنید."
+unemployed-leave: "&cشما شغلی ندارید."
+success-leave: "&7شما با موفقیت &cشغل را ترک کردید."
+
+usage-kick: "&fنحوه استفاده: &7/job kick [بازیکن]"
+self-kick: "&4&lشما نمی‌توانید خودتان را اخراج کنید."
+unemployed-kick: "&cبازیکن شغلی ندارد."
+deny-permission-kick: "&cفقط رهبران می‌توانند اعضا را اخراج کنند."
+success-kick: "&2بازیکن با موفقیت اخراج شد."
+
+usage-promote: "&fنحوه استفاده: &7/job promote [بازیکن]"
+unemployed-promote: "&cبازیکن شغلی ندارد."
+deny-permission-promote: "&cفقط رهبران می‌توانند ارتقاء دهند."
+doesnt-have-parent-promote: "&cاین شغل مرحله بعدی برای ارتقاء ندارد."
+success-promote: "&7بازیکن با &aموفقیت &7ارتقاء یافت."
+error-promote: "&cبازیکن در بالاترین رتبه است."
+
+usage-depromote: "&fنحوه استفاده: &7/job depromote [بازیکن]"
+unemployed-depromote: "&cبازیکن شغلی ندارد."
+deny-permission-depromote: "&4فقط رهبران می‌توانند تنزل رتبه دهند."
+success-depromote: "&aبازیکن با موفقیت تنزل یافت."
+error-depromote: "&4بازیکن در پایین‌ترین رتبه است."
+
+usage-warn: "&fنحوه استفاده: &7/job warn [add/take/clear] [بازیکن]"
+unemployed-warn: "&cبازیکن شغلی ندارد."
+deny-permission-warn: "&cفقط رهبران می‌توانند هشدار دهند."
+clear-warn: "&7هشدارهای بازیکن با &aموفقیت &7پاک شدند &aاکنون: {warn}"
+add-warn: "&7هشدار بازیکن با &cموفقیت &7افزوده شد &aاکنون: {warn}"
+take-warn: "&7هشدار بازیکن با &aموفقیت &7کم شد &aاکنون: {warn}"
+
+usage-listmembers: "&fنحوه استفاده: &7/job listmembers [شغل]"
+deny-permission-listmembers: "&cشما اجازه مشاهده اعضا را ندارید."
+job-not-found: "&cشغل پیدا نشد."
+success-open-listmembers: "&eمنو باز شد."
+
+deny-permission-info: "&cشما اجازه مشاهده اطلاعات را ندارید."
+usage-info: "&fنحوه استفاده: &7/job info <بازیکن>"
+
+usage-war: "&fنحوه استفاده: &7/job war <start/stop> <شغل1> <شغل2>"
+deny-permission-war: "&cشما اجازه شروع جنگ را ندارید."
+self-war: "&4شما نمی‌توانید با شغل خودتان جنگ آغاز کنید."
+was-in-war: "&7قبلاً با این شغل در جنگ بودید!"
+was-not-in-war: "&7شما با این شغل در جنگ نبودید!"
+1st-job-not-found-war: "&4شغل اول پیدا نشد."
+2nd-job-not-found-war: "&4شغل دوم پیدا نشد."
+peace-error-war: "&7شما در صلح با این شغل هستید. ابتدا باید صلح را بشکنید."
+start-war: "&7جنگ با این شغل آغاز شد."
+stop-war: "&7جنگ با این شغل متوقف شد."
+war-list: "&aاین شغل در جنگ با: {wars}"
+
+usage-setleader: "&e/job setleader [نام‌کاربری] [شغل]"
+player-notfound-setleader: "&cبازیکن پیدا نشد."
+deny-permission-setleader: "&cشما اجازه انجام این عمل را ندارید."
+job-notfound-setleader: "&cاین شغل پیدا نشد."
+success-setleader: "&7بازیکن با &aموفقیت &7به عنوان رهبر انتخاب شد."
+
+unemployed-info: "\n
+&6&l&m=======================================\n
+&6&lنام: &e%player_name% \n
+&6&lشغل: &f&lشهروند \n
+&6&lهشدار: &e0/بی‌نهایت \n
+&6&l&m=======================================
+"
+
+employed-info: "\n
+&6&l&m=======================================\n
+&6&lنام: &e%player_name% \n
+&6&lشغل: %seasonjobs_prefix% &e(رهبر: %seasonjobs_leader%) \n
+&6&lهشدار: &e%seasonjobs_warns%&6/&e%seasonjobs_warns_max% \n
+&6&lامتیاز: &e%seasonjobs_point%&6/&e%seasonjobs_job_point%  &a&l%seasonjobs_cent_point%% \n
+&6&lزمان بازی: &e%seasonjobs_playtime_p_hours% \n
+&6&l&m=======================================
+"
+
+help-message: "\n
+&a&l--------------------------------- \n
+&7/job info [بازیکن] &8- &fمشاهده اطلاعات بازیکن. \n
+&7/job invite [بازیکن] [شغل] &8- &fدعوت بازیکن به شغل. \n
+&7/job accept &8- &fپذیرفتن درخواست شغل. \n
+&7/job deny &8- &fرد کردن دعوت‌نامه. \n
+&7/job leave &8- &fترک شغل فعلی. \n
+&7/job promote [بازیکن] &8- &fارتقاء بازیکن. \n
+&7/job depromote [بازیکن] &8- &fتنزل رتبه بازیکن. \n
+&7/job warn [add/take/clear] [بازیکن] &8- &fمدیریت هشدار بازیکن. \n
+&7/job kick [بازیکن] &8- &fاخراج بازیکن از شغل. \n
+&7/job listmembers [شغل] &8- &fمشاهده اعضای شغل. \n
+&a&l--------------------------------- \n
+"

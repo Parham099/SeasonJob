@@ -10,6 +10,7 @@ import org.parham.seasonjob.data.member.Member;
 import org.parham.seasonjob.data.member.MemberManager;
 import org.parham.seasonjob.data.sender.Messages;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Warn implements SeasonCommand {
@@ -62,7 +63,7 @@ public class Warn implements SeasonCommand {
                     member.delete();
                 }
                 sender.sendMessage(Messages.getMessage("add-warn").replace("{warn}", String.valueOf(member.getWarn())));
-            } else if (args[0].equalsIgnoreCase("take")) {
+            } else if (args[0].equalsIgnoreCase("take") && member.getWarn() > 0) {
                 member.setWarn(warns - 1);
                 sender.sendMessage(Messages.getMessage("take-warn").replace("{warn}", String.valueOf(member.getWarn())));
             } else {
@@ -74,7 +75,7 @@ public class Warn implements SeasonCommand {
     @Override
     public List<String> getCompletions(CommandSender sender, String[] args) {
         if (args.length == 2) {
-            return List.of("clear", "add", "take");
+            return Arrays.asList("clear", "add", "take");
         } else {
             return null;
         }
