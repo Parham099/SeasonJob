@@ -26,7 +26,7 @@ public class Expansion extends PlaceholderExpansion {
     }
 
     public String getVersion() {
-        return "3.0.1";
+        return "3.0.4";
     }
 
     public String onRequest(OfflinePlayer player, String identifier) {

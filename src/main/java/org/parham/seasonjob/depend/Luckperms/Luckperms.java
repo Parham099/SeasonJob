@@ -12,7 +12,7 @@ import org.parham.seasonjob.data.job.JobManager;
 import java.util.UUID;
 
 public class Luckperms {
-    private static int SYNC_INIT_TIME_SEC = 10;
+    private static int SYNC_INIT_TIME_SEC = SeasonJob.getInstance().getConfig().getInt("luck-perms-sync-time");
     public static boolean isEnable = false;
 
     public static void checkEnabled() {
@@ -41,6 +41,6 @@ public class Luckperms {
                     }
                 }
             }
-        }, 1, 20 * SYNC_INIT_TIME_SEC);
+        }, 1, 20L * SYNC_INIT_TIME_SEC);
     }
 }

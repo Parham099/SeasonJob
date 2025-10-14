@@ -2,14 +2,11 @@ package org.parham.seasonjob.depend.Luckperms;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.parham.seasonjob.SeasonJob;
 import org.parham.seasonjob.data.job.Job;
 import org.parham.seasonjob.data.job.JobManager;
@@ -35,7 +32,7 @@ public class LuckpermsLoaded implements JobPermissionManager {
                 if (!luckPerms.getGroupManager().isLoaded(jobName)) {
                     luckPerms.getGroupManager().createAndLoadGroup(jobName);
                 }
-                System.out.println(job.getMembers());
+
                 updateJobs(luckPerms, jobName, job);
             }
         }, 1, 20 * SYNC_INIT_TIME_SEC);

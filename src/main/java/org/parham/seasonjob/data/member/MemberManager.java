@@ -61,7 +61,7 @@ public class MemberManager {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Field to save members.");
         }
     }
-    public static boolean save(Member member) throws IOException {
+    public static void save(Member member) throws IOException {
         File folder = new File(SeasonJob.getInstance().getDataFolder(), "data");
         if (!folder.exists()) {
             folder.mkdir();
@@ -84,7 +84,6 @@ public class MemberManager {
 
         config.save(date);
 
-        return true;
     }
 
     public static void loadAll() {
