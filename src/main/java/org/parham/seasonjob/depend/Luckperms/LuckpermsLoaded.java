@@ -35,7 +35,7 @@ public class LuckpermsLoaded implements JobPermissionManager {
                 if (!luckPerms.getGroupManager().isLoaded(jobName)) {
                     luckPerms.getGroupManager().createAndLoadGroup(jobName);
                 }
-
+                System.out.println(job.getMembers());
                 updateJobs(luckPerms, jobName, job);
             }
         }, 1, 20 * SYNC_INIT_TIME_SEC);

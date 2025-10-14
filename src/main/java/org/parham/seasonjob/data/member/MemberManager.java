@@ -45,23 +45,6 @@ public class MemberManager {
         }
     }
 
-    public static void updateMembersDataFiles() {
-        File folder = new File(SeasonJob.getInstance().getDataFolder(), "data");
-
-        if (!members.isEmpty()) {
-            for (File memFile : folder.listFiles()) {
-
-                try {
-                    if (memFile.exists() && !members.containsKey(UUID.fromString(memFile.getName().replace(".yml", "")))) {
-                        memFile.delete();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public static void saveAll() {
         try {
             for (UUID id : members.keySet()) {
