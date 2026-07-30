@@ -1,5 +1,6 @@
 package org.parham.seasonjob;
 
+import ir.parham099.seasonMenuBuilder.SeasonMenuBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,6 +21,8 @@ import org.parham.seasonjob.depend.Luckperms.LuckpermsNotFound;
 import org.parham.seasonjob.depend.Placeholders;
 import org.parham.seasonjob.events.PeaceEvents;
 import org.parham.seasonjob.events.WarEvents;
+import org.parham.seasonjob.config.ListmemberConfig;
+import processors.ConfigProcessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +37,8 @@ public final class SeasonJob extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         saveDefaultConfig();
+        // load listmembers configuration
+        ConfigProcessor.INSTANCE.loadYamlObject(ListmemberConfig.class);
 
         if (getConfig().getBoolean("default-jobs")) {
             saveResource("jobs/taxi.yml", false);
@@ -144,10 +149,9 @@ public final class SeasonJob extends JavaPlugin {
         Bukkit.getPluginCommand("job").setExecutor(new Commands());
         console.sendMessage(color("&2Commands loaded."));
         console.sendMessage("");
-        console.sendMessage(color("&eLoadin listmembers ..."));
-        Listmembers.listmembersSize = getInstance().getConfig().getInt("listmembers");
-        Bukkit.getPluginManager().registerEvents(new Listmembers(), getInstance());
-        console.sendMessage(color("&aListmembers Menu Loaded " + Listmembers.listmembersSize));
+        console.sendMessage(color("&eLoading SeasonMenuBuilder ..."));
+        new SeasonMenuBuilder(this);
+        console.sendMessage(color("&aSeasonMenuBuilder Loaded"));
         console.sendMessage("");
         Playtime.updater();
         console.sendMessage(color("&2Playtime updater loading..."));

@@ -56,16 +56,19 @@ public class WarEvents implements Listener {
             }
         }
     }
+
     private void giveRewards(Player killer) {
         for (String cmd : Settings.rewardKiller) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("{player}", killer.getName()));
         }
     }
+
     private void giveNerf(Player killed) {
         for (String cmd : Settings.nerfKilled) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("{player}", killed.getName()));
         }
     }
+
     private void setPoints(Player killerPlayer, Player killedPlayer)  {
         Member killer = MemberManager.getMember(killerPlayer.getUniqueId());
         Member killed = MemberManager.getMember(killedPlayer.getUniqueId());
